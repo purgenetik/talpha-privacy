@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building from Source — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html" class="active">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>Building TAlpha v3.0 from Source</h1>
+<h2>Requirements</h2>
+<ul>
+<li>Android Studio compatible with the project Gradle configuration;</li>
+<li>Android SDK / compile target required by the project;</li>
+<li>JDK 17;</li>
+<li>Git for repository workflows;</li>
+<li>Android device or emulator.</li>
+</ul>
+<p>The supplied build declares:</p>
+<pre><code>minSdk = 24
+targetSdk = 37
+versionCode = 18
+versionName = 3.0</code></pre>
+<h2>Clone</h2>
+<pre><code>git clone git@github.com:purgenetik/TAlpha4.git
+cd TAlpha4</code></pre>
+<p>Open the directory containing:</p>
+<pre><code>settings.gradle.kts
+build.gradle.kts
+gradlew
+app/</code></pre>
+<p>in Android Studio and allow Gradle synchronization to finish.</p>
+<h2>JDK</h2>
+<p>Use JDK 17 for Gradle/Kotlin compilation according to the project configuration.</p>
+<h2>Debug build</h2>
+<p>Windows:</p>
+<pre><code>.\gradlew.bat assembleDebug</code></pre>
+<p>Linux/macOS:</p>
+<pre><code>./gradlew assembleDebug</code></pre>
+<h2>Release bundle</h2>
+<p>For Google Play, build a signed Android App Bundle from Android Studio or the project's configured release workflow.</p>
+<p>Before publishing a new release, increment <code>versionCode</code>. Google Play will not accept reuse of a previously uploaded version code.</p>
+<h2>Release testing</h2>
+<p>Test the release/minified build, not only debug. TAlpha previously required an R8-related release fix, so optimized-build testing is part of the release checklist.</p>
+<p>For v3.0 additionally test:</p>
+<ul>
+<li>database download/update;</li>
+<li>startup with network unavailable after a database has been installed;</li>
+<li>Summary Scheme Index;</li>
+<li>several isobaric layers;</li>
+<li>zoom/pan and hit zones;</li>
+<li>ENSDF-derived alpha-decay schemes;</li>
+<li>transfer from a daughter level to calculator;</li>
+<li>Premium gating;</li>
+<li>footer and personal logo.</li>
+</ul>
+<h2>Source release</h2>
+<p>Prefer Git tags for reproducible source snapshots:</p>
+<pre><code>v3.0</code></pre>
+<p>A GitHub source archive generated from the release tag is preferable to manually copying an Android Studio working directory.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

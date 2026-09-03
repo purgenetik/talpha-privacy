@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuclear Database — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html" class="active">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>TAlpha Nuclear Database</h1>
+<h2>Specification</h2>
+<p>The formal schema is defined by the separately maintained <strong>TAlpha Nuclide Database Format Specification (NDFS)</strong>. Version 3.0 of the Android application reads the v1 core fields plus v2.2 additions used for experimental alpha-decay information.</p>
+<p>See <a href="specifications.html">Specifications</a>.</p>
+<h2>Kotlin data model</h2>
+<p><code>NuclideDatabase.kt</code> defines:</p>
+<pre><code>NuclideDatabase
+ ├─ versionCode
+ ├─ formatVersion
+ └─ layers[]
+
+NuclideLayer
+ ├─ a
+ └─ nuclides[]
+
+NuclideRecord
+ ├─ a
+ ├─ z
+ ├─ symbol
+ ├─ massExcess
+ ├─ qAlpha
+ ├─ estimated
+ ├─ tHalfExpYears
+ ├─ alphaDecayJson
+ └─ rawJson</code></pre>
+<h2>Parsed JSON fields</h2>
+<p>The Android parser requires the v1 core:</p>
+<pre><code>versionCode
+layers
+layers[].A
+layers[].nuclides
+Z
+symbol
+massExcess
+qAlpha
+estimated</code></pre>
+<p>It additionally reads:</p>
+<pre><code>formatVersion
+T_hl_exp
+alphaDecay</code></pre>
+<p><code>T_hl_exp</code> is accepted only when it is finite and greater than zero.</p>
+<p>The complete original nuclide JSON object is also retained as <code>rawJson</code>.</p>
+<h2>JSON and ZIP support</h2>
+<p>The local loader accepts files named as versioned TAlpha databases and supports:</p>
+<pre><code>talpha_nuclides_&lt;version&gt;.json
+talpha_nuclides_&lt;version&gt;.zip</code></pre>
+<p>For a ZIP package, the loader scans entries until it finds a non-directory <code>.json</code> entry and parses that content.</p>
+<h2>Local storage</h2>
+<p>The database directory is:</p>
+<pre><code>filesDir/nuclide_database/</code></pre>
+<p>The application determines the latest local database by extracting the numeric version from matching JSON/ZIP filenames and selecting the greatest version.</p>
+<h2>Basic parser validation</h2>
+<p>After parsing, the Android code requires:</p>
+<pre><code>versionCode &gt; 0
+layers is not empty</code></pre>
+<p>The updater additionally verifies that a newly downloaded database's internal <code>versionCode</code> equals the manifest's <code>latestVersion</code>.</p>
+<p>The formal NDFS document defines the broader schema and physical-consistency rules; this page only describes checks implemented by the Android reader.</p>
+<h2>Compatibility</h2>
+<p><code>formatVersion</code> is optional in the Android data model. Optional v2.2 fields may be absent. This permits the reader to retain compatibility with records that only contain the earlier core fields, provided the required parser fields are present.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

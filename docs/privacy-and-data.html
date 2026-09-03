@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy and Data — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html" class="active">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>Privacy and Data Handling</h1>
+<p>This page documents behavior visible in the v3.0 source. It is not a legal replacement for the published Privacy Policy.</p>
+<h2>Local calculation</h2>
+<p>The Denisov half-life calculations run locally.</p>
+<h2>Calculation history</h2>
+<p>History is stored in the application's private files area under:</p>
+<pre><code>filesDir/data/</code></pre>
+<h2>Nuclear database</h2>
+<p>Downloaded TAlpha nuclear databases are stored locally under:</p>
+<pre><code>filesDir/nuclide_database/</code></pre>
+<p>The application contacts the configured remote source to retrieve the database manifest and, when a newer version exists, the database package.</p>
+<p>The Android application consumes prebuilt TAlpha data; it does not directly query ENSDF for each user interaction.</p>
+<h2>Personal logo</h2>
+<p>A Premium personal logo is stored locally as:</p>
+<pre><code>personal_logo.png</code></pre>
+<h2>Sharing</h2>
+<p>Premium history sharing passes a generated file to Android's share system. After the user selects another application, handling by that destination is governed by the destination application's policies.</p>
+<h2>Advertising</h2>
+<p>The Free version integrates Google Mobile Ads / AdMob.</p>
+<h2>Purchases</h2>
+<p>Premium purchases use Google Play Billing. TAlpha receives purchase/product state needed for entitlement; payment processing is performed by Google Play.</p>
+<h2>External links</h2>
+<p>External links are opened using Android/browser facilities.</p>
+<h2>Maintenance</h2>
+<p>The public Privacy Policy should be reviewed whenever the project changes:</p>
+<ul>
+<li>advertising SDKs;</li>
+<li>billing behavior;</li>
+<li>database hosting;</li>
+<li>analytics/crash reporting;</li>
+<li>cloud storage;</li>
+<li>user accounts;</li>
+<li>third-party services.</li>
+</ul></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

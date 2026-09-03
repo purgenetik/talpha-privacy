@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Premium — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html" class="active">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>Premium Features</h1>
+<h2>Premium entitlement</h2>
+<p>TAlpha uses Google Play Billing for its Premium in-app product.</p>
+<p>The v3.0 source uses Premium state to gate or alter several features.</p>
+<h2>Premium features in v3.0</h2>
+<ul>
+<li>removal of advertising;</li>
+<li>calculation-history sharing;</li>
+<li><strong>Chart of α-decaying nuclei</strong>;</li>
+<li>personal logo;</li>
+<li>Premium launcher presentation.</li>
+</ul>
+<h2>Chart gating</h2>
+<p>The navigation drawer always shows the Chart entry, but it is visually disabled/marked Premium for non-Premium users.</p>
+<p>Selecting it without Premium opens the Premium dialog instead of the chart.</p>
+<h2>Personal logo</h2>
+<p>Premium users can install a personal logo. The image is stored locally as:</p>
+<pre><code>personal_logo.png</code></pre>
+<p>In v3.0 the personal logo is displayed in the center of the fixed footer, while the standard TAlpha application logo is restored to the upper-right header position.</p>
+<h2>Billing</h2>
+<p>The application:</p>
+<ol>
+<li>creates a Billing client;</li>
+<li>connects to Google Play;</li>
+<li>queries Premium product information;</li>
+<li>queries purchases;</li>
+<li>launches a purchase flow;</li>
+<li>processes purchase updates;</li>
+<li>updates application entitlement state.</li>
+</ol>
+<p>Payment credentials are handled by Google Play rather than TAlpha.</p>
+<h2>Testing warning</h2>
+<p>Premium behavior should be tested through the appropriate Google Play testing/license-testing configuration. Local debug installation alone may not reproduce production purchase behavior.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

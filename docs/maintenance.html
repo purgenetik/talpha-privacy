@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maintenance — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html" class="active">Maintenance</a></nav>
+<main><h1>Maintainer Guide</h1>
+<h2>Release rule</h2>
+<p>Documentation should describe the tagged source release.</p>
+<p>For v3.0, the source metadata are:</p>
+<pre><code>versionCode = 18
+versionName = 3.0</code></pre>
+<h2>Release checklist</h2>
+<ol>
+<li>Verify calculator reference cases.</li>
+<li>Verify <code>versionCode</code> and <code>versionName</code>.</li>
+<li>Test debug build.</li>
+<li>Test minified release build.</li>
+<li>Test Google Play Billing entitlement.</li>
+<li>Test Free-version advertising.</li>
+<li>Test history save/load/delete/share.</li>
+<li>Test personal logo.</li>
+<li>Test nuclear-database update from the previous database version.</li>
+<li>Test offline fallback.</li>
+<li>Test Summary Scheme Index.</li>
+<li>Test representative nuclide layers.</li>
+<li>Test zoom/pan and clickable regions.</li>
+<li>Test alpha-decay schemes with multiple excited levels.</li>
+<li>Test a nuclide with no usable ENSDF transition data.</li>
+<li>Verify transfer of <code>A</code>, <code>Z</code>, branch <code>Qα</code>, <code>Eexc</code> and <code>l=0</code> to calculator.</li>
+<li>Update <code>CHANGELOG.md</code>.</li>
+<li>Update affected <code>docs/*.md</code>.</li>
+<li>Verify NDFS PDF links.</li>
+<li>Commit, tag and push the release.</li>
+</ol>
+<h2>Scientific code</h2>
+<p>Changes to <code>AlphaDecayCalculator.kt</code> are scientifically significant. Do not mix coefficient/formula changes into cosmetic refactoring without explicit validation and changelog documentation.</p>
+<h2>Database reader</h2>
+<p>Changes to:</p>
+<pre><code>NuclideDatabase.kt
+NuclideDatabaseUpdater.kt</code></pre>
+<p>can affect compatibility and safe updates.</p>
+<p>If a change alters the formal database schema rather than only the Android implementation, revise the NDFS specification as a separately versioned controlled document.</p>
+<h2>ENSDF renderer</h2>
+<p>Changes to <code>AlphaDecayScheme.kt</code> can affect how imported evaluated data are interpreted for display.</p>
+<p>Pay particular attention to:</p>
+<ul>
+<li>dataset ID joins;</li>
+<li>daughter-level energy;</li>
+<li>duplicate-level handling;</li>
+<li>experimental half-life association;</li>
+<li>missing-data fallback;</li>
+<li>branch Qα calculation;</li>
+<li><code>l</code> handling.</li>
+</ul>
+<h2>Suggested repository layout</h2>
+<pre><code>TAlpha4/
+├── README.md
+├── CHANGELOG.md
+├── docs/
+│   ├── README.md
+│   ├── overview.md
+│   ├── user-guide.md
+│   ├── physics-model.md
+│   ├── chart-of-nuclides.md
+│   ├── alpha-decay-schemes.md
+│   ├── nuclear-database.md
+│   ├── database-updates.md
+│   ├── ensdf-data.md
+│   ├── architecture.md
+│   ├── premium.md
+│   ├── history-format.md
+│   ├── building.md
+│   ├── privacy-and-data.md
+│   ├── specifications.md
+│   ├── maintenance.md
+│   └── images/
+├── misc/
+│   └── TAlphaNDFS_spec_v.2.2.pdf
+└── app/</code></pre>
+<h2>GitHub Wiki</h2>
+<p>A Wiki may mirror selected user-facing pages, but <code>docs/</code> should remain the version-controlled documentation source of truth because it follows Git tags and source releases.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

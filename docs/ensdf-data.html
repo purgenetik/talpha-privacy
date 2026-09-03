@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ENSDF Data — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html" class="active">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>ENSDF Data in TAlpha v3.0</h1>
+<h2>Role of ENSDF</h2>
+<p>Version 3.0 adds experimental alpha-decay information produced from ENSDF API data to the TAlpha nuclear database.</p>
+<p>The Android application does <strong>not</strong> query ENSDF directly while the user browses the chart. It consumes the already prepared/normalized information stored in the downloaded TAlpha database.</p>
+<p>This separates:</p>
+<pre><code>data acquisition / database generation</code></pre>
+<p>from:</p>
+<pre><code>mobile visualization / calculation</code></pre>
+<h2>Data used by the Android application</h2>
+<p>For a nuclide, v3.0 can consume:</p>
+<pre><code>T_hl_exp
+alphaDecay.decays
+alphaDecay.transitions</code></pre>
+<p>The Android code uses these data to display:</p>
+<ul>
+<li>evaluated parent alpha half-life when present;</li>
+<li>daughter excited levels;</li>
+<li>spin/parity when available;</li>
+<li>transition intensity when available;</li>
+<li>branch-specific Qα derived from parent Qα and daughter excitation energy.</li>
+</ul>
+<h2>Provenance and normalization</h2>
+<p>The authoritative rules for ENSDF provenance, parent matching, dataset joins, archival records, units and conversion belong to <strong>TAlpha NDFS v2.2</strong>.</p>
+<p>The Android reader assumes that database-generation scripts have already produced a validated normalized structure.</p>
+<h2>Experimental half-life</h2>
+<p>At nuclide level:</p>
+<pre><code>T_hl_exp</code></pre>
+<p>is read into:</p>
+<pre><code>NuclideRecord.tHalfExpYears</code></pre>
+<p>and can be displayed directly on the isobaric chart.</p>
+<p>Inside a decay scheme, normalized decay records can provide:</p>
+<pre><code>halfLifeYears</code></pre>
+<p>which is associated with transitions through dataset IDs.</p>
+<h2>Important distinction</h2>
+<p>Three different quantities can coexist:</p>
+<ol>
+<li>evaluated experimental parent alpha half-life from the database;</li>
+<li>alpha-decay transition information from ENSDF-derived records;</li>
+<li>model half-life calculated by TAlpha from the selected <code>A</code>, <code>Z</code>, <code>Qα</code>, <code>Eexc</code> and <code>l</code>.</li>
+</ol>
+<p>The application should preserve this distinction in UI and documentation.</p>
+<h2>Database-generation pipeline</h2>
+<p>The source distribution contains the Android consumer, while the formal NDFS v2.2 specification describes the recommended acquisition/conversion pipeline. Database-generation scripts are maintained as part of the wider data-production workflow and should be documented alongside those scripts when included in the repository.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

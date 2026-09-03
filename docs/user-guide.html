@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Guide — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html" class="active">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>User Guide</h1>
+<h2>1. Calculator</h2>
+<p>Enter:</p>
+<pre><code>A
+Z
+Q_alpha [MeV]
+E_exc_level [MeV]
+l</code></pre>
+<p>TAlpha calculates the half-life with both implemented parameterizations:</p>
+<ul>
+<li>PRC 79 (2009) + Erratum (2010);</li>
+<li>PRC 92 (2015).</li>
+</ul>
+<p>The application derives <code>N = A - Z</code> and selects the appropriate fitted coefficient set automatically.</p>
+<h2>2. Results</h2>
+<p>The calculation engine produces for each model:</p>
+<ul>
+<li>corrected decay energy;</li>
+<li><code>log10(T1/2 [s])</code>;</li>
+<li><code>T1/2</code> in seconds;</li>
+<li><code>T1/2</code> in years.</li>
+</ul>
+<p>The main UI presents the calculated lifetime results; internal corrected-Q values remain part of the calculation result object.</p>
+<h2>3. Calculation history</h2>
+<p>Successful calculations can be stored in the active history file:</p>
+<pre><code>filesDir/data/default.talpha</code></pre>
+<p>History can be viewed, saved under another <code>.talpha</code> filename, loaded, and deleted. Premium users can share history through Android's standard sharing interface.</p>
+<p>See <a href="history-format.html">History Format</a>.</p>
+<h2>4. Chart of α-decaying nuclei</h2>
+<p>The navigation drawer contains <strong>Chart of α-decaying nuclei</strong>. In v3.0 this is a Premium feature.</p>
+<p>Opening it displays the <strong>Summary Scheme Index</strong>, generated from the mass-number layers available in the currently loaded nuclear database.</p>
+<p>Select an entry such as:</p>
+<pre><code>A=152</code></pre>
+<p>to open that isobaric layer.</p>
+<h2>5. Isobaric chart</h2>
+<p>The chart plots nuclides belonging to one mass number <code>A</code>.</p>
+<p>The vertical coordinate is derived from mass excess relative to the minimum mass excess in the selected layer. Neighboring <code>Z</code> values are connected graphically.</p>
+<p>For each nuclide the chart can display:</p>
+<ul>
+<li>nuclide label;</li>
+<li><code>Qα</code> in keV when supplied;</li>
+<li>experimental alpha half-life <code>T½</code> in years when <code>T_hl_exp</code> is present.</li>
+</ul>
+<p>The chart supports:</p>
+<ul>
+<li>pinch-to-zoom;</li>
+<li>pan;</li>
+<li>tap selection.</li>
+</ul>
+<p>Clickable regions are outlined to make interactive areas visible.</p>
+<h2>6. Alpha-decay scheme</h2>
+<p>Tapping a nuclide opens its alpha-decay scheme.</p>
+<p>If normalized ENSDF alpha-transition information is available, TAlpha extracts daughter excitation levels and draws known alpha branches.</p>
+<p>For a displayed branch:</p>
+<pre><code>branch Qα = parent ground-state Qα - daughter excitation energy</code></pre>
+<p>The scheme may include:</p>
+<ul>
+<li>daughter excitation energy;</li>
+<li>spin/parity when available;</li>
+<li>branch Qα;</li>
+<li>experimental half-life associated with the matched decay dataset;</li>
+<li>transition intensity when available in the imported record.</li>
+</ul>
+<p>Duplicate daughter levels from multiple ENSDF datasets are merged by excitation energy for display, with preference for a record carrying an experimental lifetime.</p>
+<h2>7. Selecting a decay branch</h2>
+<p>Tap a daughter level to transfer the branch to the calculator.</p>
+<p>The source transfers:</p>
+<pre><code>A      = parent A
+Z      = parent Z
+Qalpha = selected branch Qα / 1000  [MeV]
+Eexc   = selected daughter excitation / 1000 [MeV]
+l      = 0</code></pre>
+<p>The current v3.0 parser sets <code>l = 0</code> because a usable orbital angular momentum is not extracted from the ENSDF transition record by this implementation. The user can edit <code>l</code> manually before calculating.</p>
+<p>After selection, the decay scheme and nuclide chart close and the calculator is shown with the transferred values.</p>
+<h2>8. Missing ENSDF data</h2>
+<p>If a nuclide has no <code>alphaDecay</code> block, or if its ENSDF-derived JSON cannot be parsed into usable daughter levels, TAlpha generates a conventional ground-state scheme instead of terminating the chart.</p>
+<h2>9. Database loading</h2>
+<p>At application startup, TAlpha attempts to obtain the best available nuclear database. The application first knows the latest local version, then attempts a remote manifest/update, and finally loads the latest local database.</p>
+<p>If no database can be loaded, the Chart screen reports:</p>
+<pre><code>Nuclide database is not available.</code></pre>
+<h2>10. Footer</h2>
+<p>Version 3.0 contains a fixed footer.</p>
+<p>It shows the application version on the left. A Premium personal logo, when installed, is displayed in the exact center of the footer. The standard TAlpha logo remains in the application header.</p>
+<h2>11. Premium</h2>
+<p>Premium controls:</p>
+<ul>
+<li>ad removal;</li>
+<li>history sharing;</li>
+<li>Chart of α-decaying nuclei;</li>
+<li>personal logo.</li>
+</ul>
+<p>Purchase entitlement is handled through Google Play Billing.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

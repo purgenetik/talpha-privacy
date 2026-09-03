@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chart of α-decaying nuclei — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html" class="active">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>Chart of α-decaying nuclei</h1>
+<h2>Purpose</h2>
+<p>The v3.0 chart provides graphical navigation through alpha-decaying nuclei stored in the TAlpha nuclear database.</p>
+<p>The feature is Premium-gated in <code>MainActivity.kt</code>.</p>
+<h2>Summary Scheme Index</h2>
+<p><code>NuclideSummary.kt</code> receives the list of mass numbers from:</p>
+<pre><code>NuclideDatabase.layers</code></pre>
+<p>It removes duplicates, sorts the values, and displays them in a four-column scrollable index:</p>
+<pre><code>A=151   A=152   A=153   ...</code></pre>
+<p>Selecting a mass number opens its <code>NuclideLayer</code>.</p>
+<p><code>CANCEL</code> returns to the calculator.</p>
+<h2>Isobaric layer</h2>
+<p><code>NuclideChart.kt</code> displays all <code>NuclideRecord</code> entries belonging to one mass number.</p>
+<p>The chart uses:</p>
+<ul>
+<li><code>Z</code> as the horizontal nuclear coordinate;</li>
+<li>mass excess relative to the layer minimum as the vertical-energy coordinate.</li>
+</ul>
+<p>Conceptually:</p>
+<pre><code>Erelative = massExcess(A,Z) - min(massExcess for layer A)</code></pre>
+<p>Neighboring nuclides ordered by <code>Z</code> are connected by light lines.</p>
+<h2>Nuclide annotation</h2>
+<p>A plotted nuclide may show:</p>
+<ul>
+<li>nuclide notation;</li>
+<li><code>Qα=... keV</code>;</li>
+<li><code>T½=... y</code> when <code>T_hl_exp</code> is available.</li>
+</ul>
+<p>The selected nuclide is highlighted.</p>
+<h2>Interaction</h2>
+<p>The Canvas supports:</p>
+<ul>
+<li>transform gestures;</li>
+<li>pinch zoom;</li>
+<li>pan;</li>
+<li>tap detection.</li>
+</ul>
+<p>Scale is constrained by renderer constants, and the point under the user's fingers is kept stable during zoom.</p>
+<p>The renderer constructs hit boxes around labels and associated information. Visible outlined clickable regions indicate where tapping will open a nuclide.</p>
+<h2>Selecting a nuclide</h2>
+<p><code>onNuclideClick</code> converts the selected <code>NuclideRecord</code> into:</p>
+<pre><code>AlphaDecaySchemeData</code></pre>
+<p>using:</p>
+<pre><code>nuclide.toAlphaDecaySchemeData()</code></pre>
+<p>and opens the interactive alpha-decay scheme.</p>
+<h2>Experimental half-life</h2>
+<p>The chart reads:</p>
+<pre><code>NuclideRecord.tHalfExpYears</code></pre>
+<p>which is populated from the optional NDFS field:</p>
+<pre><code>T_hl_exp</code></pre>
+<p>Only finite positive values are displayed.</p>
+<h2>Missing Qα</h2>
+<p>The database parser preserves the NDFS convention for <code>qAlpha</code>; the chart formatter only prints a meaningful positive finite Qα value as a normal numeric annotation. Schema semantics remain defined by the formal NDFS specification.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

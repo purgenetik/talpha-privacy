@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Specifications — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html" class="active">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>TAlpha Specifications</h1>
+<p>Formal specifications are maintained separately from the general <code>docs/</code> directory.</p>
+<h2>Current nuclear-database specification</h2>
+<p><strong>TAlpha NDFS v2.2 — TAlpha Nuclide Database Format Specification</strong></p>
+<p>If the PDF is stored in the repository's <code>misc/</code> directory as in the supplied v3.0 source tree:</p>
+<p><strong>TAlphaNDFS_spec_v.2.2.pdf</strong> (maintained as a separate controlled specification)</p>
+<h2>Documentation policy</h2>
+<p>General documentation explains how TAlpha uses the database, but the formal specification remains authoritative for:</p>
+<ul>
+<li>schema fields and types;</li>
+<li>canonical units;</li>
+<li>compatibility rules;</li>
+<li>optional/required fields;</li>
+<li>ENSDF provenance;</li>
+<li>validation rules;</li>
+<li>archival interchange format;</li>
+<li>database-generation pipeline requirements.</li>
+</ul>
+<p>Do not copy the full specification into ordinary Markdown documentation. Link to the controlled PDF so that schema rules have one authoritative definition.</p>
+<h2>Future versions</h2>
+<p>When NDFS is revised, retain older specification files needed for reproducibility and add a new explicitly versioned PDF rather than silently replacing the previous document.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>

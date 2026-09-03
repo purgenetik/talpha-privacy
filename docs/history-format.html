@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>History Format — TAlpha v3.0</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="header-inner">
+  <div class="brand">TAlpha Documentation</div>
+  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
+</div></header>
+<div class="layout">
+<nav><a href="index.html">Documentation</a>
+<a href="overview.html">Overview</a>
+<a href="user-guide.html">User Guide</a>
+<a href="physics-model.html">Physics Model</a>
+<a href="chart-of-nuclides.html">Chart of α-decaying nuclei</a>
+<a href="alpha-decay-schemes.html">Alpha-decay Schemes</a>
+<a href="nuclear-database.html">Nuclear Database</a>
+<a href="database-updates.html">Database Updates</a>
+<a href="ensdf-data.html">ENSDF Data</a>
+<a href="architecture.html">Architecture</a>
+<a href="premium.html">Premium</a>
+<a href="history-format.html" class="active">History Format</a>
+<a href="building.html">Building from Source</a>
+<a href="privacy-and-data.html">Privacy and Data</a>
+<a href="specifications.html">Specifications</a>
+<a href="maintenance.html">Maintenance</a></nav>
+<main><h1>Calculation History Format</h1>
+<h2>File type</h2>
+<p>TAlpha calculation histories use:</p>
+<pre><code>.talpha</code></pre>
+<p>The active file is stored under:</p>
+<pre><code>filesDir/data/default.talpha</code></pre>
+<h2>Header</h2>
+<pre><code>A,Z,Q_alpha,E_exc_level,l,logT_2009,Tsec_2009,Tyr_2009,logT_2015,Tsec_2015,Tyr_2015</code></pre>
+<h2>Columns</h2>
+<table><thead><tr><th>Column</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>A</code></td><td>Parent mass number</td></tr>
+<tr><td><code>Z</code></td><td>Parent atomic number</td></tr>
+<tr><td><code>Q_alpha</code></td><td>Input Qα</td></tr>
+<tr><td><code>E_exc_level</code></td><td>Daughter excitation energy</td></tr>
+<tr><td><code>l</code></td><td>Orbital angular momentum</td></tr>
+<tr><td><code>logT_2009</code></td><td>2009/2010 log10 half-life</td></tr>
+<tr><td><code>Tsec_2009</code></td><td>2009/2010 half-life, seconds</td></tr>
+<tr><td><code>Tyr_2009</code></td><td>2009/2010 half-life, years</td></tr>
+<tr><td><code>logT_2015</code></td><td>2015 log10 half-life</td></tr>
+<tr><td><code>Tsec_2015</code></td><td>2015 half-life, seconds</td></tr>
+<tr><td><code>Tyr_2015</code></td><td>2015 half-life, years</td></tr>
+</tbody></table>
+<h2>Duplicate detection</h2>
+<p>The five calculator inputs define duplicate identity. Floating Qα and excitation values are compared with the tolerance implemented in <code>HistoryStorage.kt</code>.</p>
+<h2>Saved histories</h2>
+<p>Saved names are sanitized, receive the <code>.talpha</code> extension when needed, and cannot use the reserved active name <code>default.talpha</code>.</p>
+<h2>Important distinction</h2>
+<p><code>.talpha</code> history files are unrelated to the JSON <strong>TAlpha NDFS nuclear database</strong>. History records contain calculations; NDFS contains nuclear-data records for chart/database functionality.</p></main>
+</div>
+<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+</body>
+</html>
