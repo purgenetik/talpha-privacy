@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Database Updates — TAlpha v3.0</title>
+<title>Database Updates — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,15 +29,20 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>Nuclear Database Update System</h1>
-<h2>Purpose</h2>
-<p><code>NuclideDatabaseUpdater.kt</code> keeps nuclear data independent from the Android application release cycle.</p>
-<p>The application can therefore use a newer database without requiring a new APK/AAB, as long as the database remains compatible with the reader.</p>
-<h2>Startup flow</h2>
-<p>At startup, <code>MainActivity</code> executes database loading on <code>Dispatchers.IO</code>:</p>
-<pre><code>loadBestAvailableDatabase(context)</code></pre>
+<main><h1 id="nuclear-database-update-system">Nuclear Database Update
+System</h1>
+<h2 id="purpose">Purpose</h2>
+<p><code>NuclideDatabaseUpdater.kt</code> keeps nuclear data independent
+from the Android application release cycle.</p>
+<p>The application can therefore use a newer database without requiring
+a new APK/AAB, as long as the database remains compatible with the
+reader.</p>
+<h2 id="startup-flow">Startup flow</h2>
+<p>At startup, <code>MainActivity</code> executes database loading on
+<code>Dispatchers.IO</code>:</p>
+<pre class="text"><code>loadBestAvailableDatabase(context)</code></pre>
 <p>The updater performs:</p>
-<pre><code>read latest local version
+<pre class="text"><code>read latest local version
         ↓
 download remote manifest
         ↓
@@ -50,44 +55,56 @@ if remote &gt; local:
     install candidate
         ↓
 load latest local database</code></pre>
-<h2>Manifest</h2>
-<p>The updater downloads a small JSON manifest from a configured Google Drive file ID.</p>
+<h2 id="manifest">Manifest</h2>
+<p>The updater downloads a small JSON manifest from a configured Google
+Drive file ID.</p>
 <p>The manifest contains:</p>
-<pre><code>latestVersion
+<pre class="text"><code>latestVersion
 fileName
 fileID</code></pre>
 <p>The code requires:</p>
-<pre><code>latestVersion &gt; 0
+<pre class="text"><code>latestVersion &gt; 0
 fileName is not blank
 fileID is not blank</code></pre>
-<h2>Version comparison</h2>
+<h2 id="version-comparison">Version comparison</h2>
 <p>A download is attempted only when:</p>
-<pre><code>manifest.latestVersion &gt; localVersion</code></pre>
-<p>Database versioning is independent of the Android application's <code>versionCode</code>.</p>
-<h2>Safe installation</h2>
+<pre class="text"><code>manifest.latestVersion &gt; localVersion</code></pre>
+<p>Database versioning is independent of the Android application's
+<code>versionCode</code>.</p>
+<h2 id="safe-installation">Safe installation</h2>
 <p>A candidate database is first downloaded to a temporary file:</p>
-<pre><code>download_&lt;manifest.fileName&gt;</code></pre>
+<pre class="text"><code>download_&lt;manifest.fileName&gt;</code></pre>
 <p>The temporary file is parsed before installation.</p>
 <p>The updater requires:</p>
-<pre><code>downloadedDatabase.versionCode == manifest.latestVersion</code></pre>
-<p>Only after successful parsing and version validation does it replace/install the final file.</p>
-<p>This protects the current working database from an invalid candidate download.</p>
-<h2>Failure handling</h2>
-<p>Remote update errors are caught and logged. The updater intentionally continues and attempts to load the latest local database.</p>
-<p>Thus, loss of connectivity or a failed remote update does not automatically prevent use of a previously installed valid database.</p>
-<p>If local loading also fails, <code>null</code> is returned and the UI reports that the nuclide database is unavailable.</p>
-<h2>Network source</h2>
-<p>The v3.0 implementation constructs Google Drive direct-download URLs of the form used by its configured manifest and database file IDs.</p>
-<p>The database host is therefore an implementation detail of v3.0, not part of NDFS itself.</p>
-<h2>Updating the published database</h2>
+<pre class="text"><code>downloadedDatabase.versionCode == manifest.latestVersion</code></pre>
+<p>Only after successful parsing and version validation does it
+replace/install the final file.</p>
+<p>This protects the current working database from an invalid candidate
+download.</p>
+<h2 id="failure-handling">Failure handling</h2>
+<p>Remote update errors are caught and logged. The updater intentionally
+continues and attempts to load the latest local database.</p>
+<p>Thus, loss of connectivity or a failed remote update does not
+automatically prevent use of a previously installed valid database.</p>
+<p>If local loading also fails, <code>null</code> is returned and the UI
+reports that the nuclide database is unavailable.</p>
+<h2 id="network-source">Network source</h2>
+<p>The v4.0 implementation constructs Google Drive direct-download URLs
+of the form used by its configured manifest and database file IDs.</p>
+<p>The database host is therefore an implementation detail of v4.0, not
+part of NDFS itself.</p>
+<h2 id="updating-the-published-database">Updating the published
+database</h2>
 <p>A maintainer should:</p>
-<ol>
+<ol type="1">
 <li>build and validate a new NDFS-compatible database;</li>
 <li>increment its database <code>versionCode</code>;</li>
 <li>package it as the expected JSON or ZIP;</li>
 <li>upload the package;</li>
-<li>update the manifest <code>latestVersion</code>, <code>fileName</code> and <code>fileID</code>;</li>
-<li>test update from a device holding the previous database version;</li>
+<li>update the manifest <code>latestVersion</code>,
+<code>fileName</code> and <code>fileID</code>;</li>
+<li>test update from a device holding the previous database
+version;</li>
 <li>test offline fallback after successful installation.</li>
 </ol></main>
 </div>

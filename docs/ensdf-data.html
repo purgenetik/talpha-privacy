@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ENSDF Data — TAlpha v3.0</title>
+<title>ENSDF Data — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,49 +29,83 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>ENSDF Data in TAlpha v3.0</h1>
-<h2>Role of ENSDF</h2>
-<p>Version 3.0 adds experimental alpha-decay information produced from ENSDF API data to the TAlpha nuclear database.</p>
-<p>The Android application does <strong>not</strong> query ENSDF directly while the user browses the chart. It consumes the already prepared/normalized information stored in the downloaded TAlpha database.</p>
+<main><h1 id="ensdf-data-in-talpha-v40">ENSDF Data in TAlpha v4.0</h1>
+<h2 id="role-of-ensdf">Role of ENSDF</h2>
+<p>Version 4.0 retains experimental alpha-decay information produced
+from ENSDF API data and adds energetically accessible adopted daughter
+levels used as potential alpha-decay candidates.</p>
+<p>The Android application does <strong>not</strong> query ENSDF
+directly while the user browses the chart. It consumes the already
+prepared/normalized information stored in the downloaded TAlpha
+database.</p>
 <p>This separates:</p>
-<pre><code>data acquisition / database generation</code></pre>
+<pre class="text"><code>data acquisition / database generation</code></pre>
 <p>from:</p>
-<pre><code>mobile visualization / calculation</code></pre>
-<h2>Data used by the Android application</h2>
-<p>For a nuclide, v3.0 can consume:</p>
-<pre><code>T_hl_exp
+<pre class="text"><code>mobile visualization / calculation</code></pre>
+<h2 id="data-used-by-the-android-application">Data used by the Android
+application</h2>
+<p>For a nuclide, v4.0 can consume:</p>
+<pre class="text"><code>T_hl_exp
 alphaDecay.decays
-alphaDecay.transitions</code></pre>
+alphaDecay.transitions
+adoptedLevels</code></pre>
 <p>The Android code uses these data to display:</p>
 <ul>
 <li>evaluated parent alpha half-life when present;</li>
 <li>daughter excited levels;</li>
 <li>spin/parity when available;</li>
 <li>transition intensity when available;</li>
-<li>branch-specific Qα derived from parent Qα and daughter excitation energy.</li>
+<li>branch-specific Qα derived from parent Qα and daughter excitation
+energy;</li>
+<li>potential final states with <code>l_min</code> when available; the
+Android renderer derives the branch Qα from the parent
+<code>qAlpha</code> and daughter excitation energy.</li>
 </ul>
-<h2>Provenance and normalization</h2>
-<p>The authoritative rules for ENSDF provenance, parent matching, dataset joins, archival records, units and conversion belong to <strong>TAlpha NDFS v2.2</strong>.</p>
-<p>The Android reader assumes that database-generation scripts have already produced a validated normalized structure.</p>
-<h2>Experimental half-life</h2>
+<h2 id="provenance-and-normalization">Provenance and normalization</h2>
+<p>The authoritative rules for ENSDF provenance, parent matching,
+dataset joins, adopted-level construction, archival records, units and
+conversion belong to <strong>TAlpha NDFS v3.0</strong>.</p>
+<p>The Android reader assumes that database-generation scripts have
+already produced a validated normalized structure.</p>
+<h2 id="experimental-half-life">Experimental half-life</h2>
 <p>At nuclide level:</p>
-<pre><code>T_hl_exp</code></pre>
+<pre class="text"><code>T_hl_exp</code></pre>
 <p>is read into:</p>
-<pre><code>NuclideRecord.tHalfExpYears</code></pre>
+<pre class="text"><code>NuclideRecord.tHalfExpYears</code></pre>
 <p>and can be displayed directly on the isobaric chart.</p>
 <p>Inside a decay scheme, normalized decay records can provide:</p>
-<pre><code>halfLifeYears</code></pre>
+<pre class="text"><code>halfLifeYears</code></pre>
 <p>which is associated with transitions through dataset IDs.</p>
-<h2>Important distinction</h2>
-<p>Three different quantities can coexist:</p>
-<ol>
-<li>evaluated experimental parent alpha half-life from the database;</li>
+<h2 id="important-distinction">Important distinction</h2>
+<p>Four different kinds of information can coexist:</p>
+<ol type="1">
+<li>evaluated experimental parent alpha half-life from the
+database;</li>
 <li>alpha-decay transition information from ENSDF-derived records;</li>
-<li>model half-life calculated by TAlpha from the selected <code>A</code>, <code>Z</code>, <code>Qα</code>, <code>Eexc</code> and <code>l</code>.</li>
+<li>energetically accessible adopted daughter levels that represent
+potential, not necessarily observed, alpha branches;</li>
+<li>model half-life calculated by TAlpha from the selected
+<code>A</code>, <code>Z</code>, <code>Qα</code>, <code>Eexc</code> and
+<code>l</code>.</li>
 </ol>
-<p>The application should preserve this distinction in UI and documentation.</p>
-<h2>Database-generation pipeline</h2>
-<p>The source distribution contains the Android consumer, while the formal NDFS v2.2 specification describes the recommended acquisition/conversion pipeline. Database-generation scripts are maintained as part of the wider data-production workflow and should be documented alongside those scripts when included in the repository.</p></main>
+<p>The application should preserve this distinction in UI and
+documentation.</p>
+<h2 id="database-generation-pipeline">Database-generation pipeline</h2>
+<p>NDFS v3.0 recommends a two-stage pipeline:</p>
+<ol type="1">
+<li>download and archive complete ENSDF responses for
+reproducibility;</li>
+<li>deterministically merge the validated alpha data and energetically
+accessible adopted daughter levels into the compact production
+database.</li>
+</ol>
+<p>The substantially revised database-generation notebook is maintained
+separately:</p>
+<p><a
+href="https://colab.research.google.com/drive/1XJ5QYY-FjN0nRw1OUMmiGmLDjHabvlAJ?usp=sharing">TAlpha
+database-generation notebook (Google Colab)</a></p>
+<p>The Android application consumes the generated database and does not
+execute this production pipeline on the device.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>

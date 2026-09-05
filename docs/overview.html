@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Overview — TAlpha v3.0</title>
+<title>Overview — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,19 +29,31 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>TAlpha v3.0 Overview</h1>
-<h2>Purpose</h2>
-<p><strong>TAlpha</strong> is an Android scientific application for calculating alpha-decay half-lives using semiempirical formulae by V. Yu. Denisov and co-authors.</p>
-<p>Version 3.0 extends the original calculator into an interactive nuclear-data tool. In addition to manual calculations, Premium users can browse a chart of known alpha-decaying nuclei, inspect experimental alpha-decay information imported from ENSDF, display known transitions to daughter excited states, and transfer a selected transition directly into the calculator.</p>
-<h2>Version</h2>
+<main><h1 id="talpha-v40-overview">TAlpha v4.0 Overview</h1>
+<h2 id="purpose">Purpose</h2>
+<p><strong>TAlpha</strong> is an Android scientific application for
+calculating alpha-decay half-lives using semiempirical formulae by V.
+Yu. Denisov and co-authors.</p>
+<p>Version 4.0 expands the nuclear-data workflow from experimentally
+observed alpha transitions to all energetically accessible alpha-decay
+candidates supplied by the database, without discarding the available
+experimental information. Premium users can browse the chart, open
+potential and experimental daughter-level schemes, and transfer a
+selected channel directly into the calculator.</p>
+<h2 id="version">Version</h2>
 <p>The supplied source declares:</p>
-<pre><code>versionCode = 18
-versionName = 3.0</code></pre>
-<p>The application footer displays the build version at runtime.</p>
-<h2>Main v3.0 capabilities</h2>
+<pre class="text"><code>versionCode = 21
+versionName = 4.0</code></pre>
+<p>The application footer displays the build version and the currently
+loaded α-DB version at runtime. This documentation package is revision
+4.1.</p>
+<h2 id="main-v40-capabilities">Main v4.0 capabilities</h2>
 <ul>
-<li>alpha-decay half-life calculation with two Denisov parameterizations;</li>
-<li>manual entry of <code>A</code>, <code>Z</code>, <code>Q_alpha</code>, daughter excitation energy and <code>l</code>;</li>
+<li>alpha-decay half-life calculation with two Denisov
+parameterizations;</li>
+<li>manual entry of <code>A</code>, <code>Z</code>,
+<code>Q_alpha</code>, daughter excitation energy and
+<code>l</code>;</li>
 <li>calculation history with save/load/delete;</li>
 <li>Premium history sharing;</li>
 <li>Premium personal logo;</li>
@@ -49,27 +61,68 @@ versionName = 3.0</code></pre>
 <li>mass-number Summary Scheme Index;</li>
 <li>interactive isobaric nuclide charts;</li>
 <li>pinch zoom and pan;</li>
-<li>experimental ground-state alpha half-life display when available;</li>
-<li>known alpha-decay schemes to daughter excited levels;</li>
+<li>experimental ground-state alpha half-life display when
+available;</li>
+<li>alpha-decay candidate schemes containing energetically accessible
+adopted daughter levels;</li>
+<li>preservation and distinct display of experimentally observed ENSDF
+transitions;</li>
+<li>SHORT and LONG decay-scheme modes;</li>
+<li><code>l_min</code> information for potential transitions when
+supplied by NDFS v3.0;</li>
 <li>transfer of a selected decay branch to the calculator;</li>
-<li>NDFS v2.2-compatible Android-side data fields;</li>
+<li>NDFS v3.0-compatible candidate-level data while retaining v1/v2
+fields;</li>
 <li>automatic remote nuclear-database update;</li>
 <li>validation before installing a downloaded database;</li>
-<li>fallback to the latest valid local database when remote update fails;</li>
-<li>fixed footer with version information and centered personal logo.</li>
+<li>fallback to the latest valid local database when remote update
+fails;</li>
+<li>improved navigation between the mass-number layer and decay
+scheme;</li>
+<li>fixed footer with application and α-DB versions plus the centered
+personal logo.</li>
 </ul>
-<h2>Calculator inputs</h2>
-<table><thead><tr><th>Parameter</th><th>Meaning</th><th>Unit</th></tr></thead><tbody>
-<tr><td><code>A</code></td><td>Parent mass number</td><td>—</td></tr>
-<tr><td><code>Z</code></td><td>Parent atomic number</td><td>—</td></tr>
-<tr><td><code>Q_alpha</code></td><td>Alpha-decay Q value</td><td>MeV</td></tr>
-<tr><td><code>E_exc_level</code></td><td>Excitation energy of daughter level</td><td>MeV</td></tr>
-<tr><td><code>l</code></td><td>Alpha orbital angular momentum</td><td>—</td></tr>
-</tbody></table>
+<h2 id="calculator-inputs">Calculator inputs</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Meaning</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>A</code></td>
+<td>Parent mass number</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>Z</code></td>
+<td>Parent atomic number</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>Q_alpha</code></td>
+<td>Alpha-decay Q value</td>
+<td>MeV</td>
+</tr>
+<tr class="even">
+<td><code>E_exc_level</code></td>
+<td>Excitation energy of daughter level</td>
+<td>MeV</td>
+</tr>
+<tr class="odd">
+<td><code>l</code></td>
+<td>Alpha orbital angular momentum</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
 <p><code>N = A - Z</code> is calculated internally.</p>
-<h2>Nuclear-data workflow</h2>
-<p>The v3.0 user path is:</p>
-<pre><code>Chart of α-decaying nuclei
+<h2 id="nuclear-data-workflow">Nuclear-data workflow</h2>
+<p>The v4.0 user path is:</p>
+<pre class="text"><code>Chart of α-decaying nuclei
         ↓
 Summary Scheme Index (select A)
         ↓
@@ -77,26 +130,35 @@ isobaric nuclide chart
         ↓
 select parent nuclide
         ↓
-alpha-decay scheme
+alpha-decay scheme (SHORT; optionally LONG)
         ↓
 select daughter level
         ↓
-A, Z, branch Qα and Eexc transferred to calculator
+A, Z, branch Qα, Eexc and available l transferred to calculator
         ↓
 calculate T1/2</code></pre>
-<p>If ENSDF transition data are unavailable or cannot be interpreted, the decay-scheme renderer falls back to a conventional ground-state-to-ground-state representation rather than crashing.</p>
-<h2>Network behavior</h2>
+<p>Experimentally known transitions and potential adopted levels are
+complementary. If neither produces a usable level, the renderer falls
+back to a conventional ground-state-to-ground-state representation
+rather than crashing.</p>
+<h2 id="network-behavior">Network behavior</h2>
 <p>The half-life calculation itself is local.</p>
-<p>Version 3.0 uses the network for services such as:</p>
+<p>Version 4.0 uses the network for services such as:</p>
 <ul>
-<li>downloading the nuclear-database manifest and newer database package;</li>
+<li>downloading the nuclear-database manifest and newer database
+package;</li>
 <li>Google Play Billing;</li>
 <li>Google Mobile Ads;</li>
 <li>external links.</li>
 </ul>
-<p>Once a valid nuclear database is present locally, the database subsystem is designed to continue using the latest local copy when a remote update cannot be obtained.</p>
-<h2>Scientific-use notice</h2>
-<p>TAlpha combines model calculations and evaluated/imported nuclear data. A calculated half-life is a prediction of the implemented formula; an experimental value displayed from the database is a separate evaluated-data quantity. They should not be confused.</p></main>
+<p>Once a valid nuclear database is present locally, the database
+subsystem is designed to continue using the latest local copy when a
+remote update cannot be obtained.</p>
+<h2 id="scientific-use-notice">Scientific-use notice</h2>
+<p>TAlpha combines model calculations, energetically allowed candidate
+levels and evaluated experimental data. A candidate level is not
+evidence of an observed branch, and a calculated half-life is not an
+experimental value.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>

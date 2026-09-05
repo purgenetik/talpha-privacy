@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Specifications — TAlpha v3.0</title>
+<title>Specifications — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,14 +29,28 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html" class="active">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>TAlpha Specifications</h1>
-<p>Formal specifications are maintained separately from the general <code>docs/</code> directory.</p>
-<h2>Current nuclear-database specification</h2>
-<p><strong>TAlpha NDFS v2.2 — TAlpha Nuclide Database Format Specification</strong></p>
-<p>If the PDF is stored in the repository's <code>misc/</code> directory as in the supplied v3.0 source tree:</p>
-<p><strong>TAlphaNDFS_spec_v.2.2.pdf</strong> (maintained as a separate controlled specification)</p>
-<h2>Documentation policy</h2>
-<p>General documentation explains how TAlpha uses the database, but the formal specification remains authoritative for:</p>
+<main><h1 id="talpha-specifications">TAlpha Specifications</h1>
+<p>Formal specifications are maintained separately from the general
+<code>docs/</code> directory.</p>
+<h2 id="current-nuclear-database-specification">Current nuclear-database
+specification</h2>
+<p><strong>TAlpha NDFS v3.0 — TAlpha Nuclide Database Format
+Specification</strong></p>
+<p>If the PDF is stored in the repository's <code>misc/</code> directory
+as in the supplied v4.1 source package:</p>
+<p><a
+href="../../misc/TAlphaNDFS_spec_v.3.0.pdf">TAlphaNDFS_spec_v.3.0.pdf</a></p>
+<p>NDFS v3.0 is an additive extension of v2.2. It introduces
+<code>adoptedLevels</code> for energetically accessible daughter-level
+candidates while preserving experimental transitions in
+<code>alphaDecay.transitions</code>.</p>
+<p>For reproducibility, the previous specification remains
+available:</p>
+<p><a
+href="../../misc/TAlphaNDFS_spec_v.2.2.pdf">TAlphaNDFS_spec_v.2.2.pdf</a></p>
+<h2 id="documentation-policy">Documentation policy</h2>
+<p>General documentation explains how TAlpha uses the database, but the
+formal specification remains authoritative for:</p>
 <ul>
 <li>schema fields and types;</li>
 <li>canonical units;</li>
@@ -47,9 +61,13 @@
 <li>archival interchange format;</li>
 <li>database-generation pipeline requirements.</li>
 </ul>
-<p>Do not copy the full specification into ordinary Markdown documentation. Link to the controlled PDF so that schema rules have one authoritative definition.</p>
-<h2>Future versions</h2>
-<p>When NDFS is revised, retain older specification files needed for reproducibility and add a new explicitly versioned PDF rather than silently replacing the previous document.</p></main>
+<p>Do not copy the full specification into ordinary Markdown
+documentation. Link to the controlled PDF so that schema rules have one
+authoritative definition.</p>
+<h2 id="future-versions">Future versions</h2>
+<p>When NDFS is revised, retain older specification files needed for
+reproducibility and add a new explicitly versioned PDF rather than
+silently replacing the previous document.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>

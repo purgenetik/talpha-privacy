@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maintenance — TAlpha v3.0</title>
+<title>Maintenance — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,14 +29,14 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html" class="active">Maintenance</a></nav>
-<main><h1>Maintainer Guide</h1>
-<h2>Release rule</h2>
+<main><h1 id="maintainer-guide">Maintainer Guide</h1>
+<h2 id="release-rule">Release rule</h2>
 <p>Documentation should describe the tagged source release.</p>
-<p>For v3.0, the source metadata are:</p>
-<pre><code>versionCode = 18
-versionName = 3.0</code></pre>
-<h2>Release checklist</h2>
-<ol>
+<p>For the v4.0 Android build, the source metadata are:</p>
+<pre class="text"><code>versionCode = 21
+versionName = 4.0</code></pre>
+<h2 id="release-checklist">Release checklist</h2>
+<ol type="1">
 <li>Verify calculator reference cases.</li>
 <li>Verify <code>versionCode</code> and <code>versionName</code>.</li>
 <li>Test debug build.</li>
@@ -45,29 +45,47 @@ versionName = 3.0</code></pre>
 <li>Test Free-version advertising.</li>
 <li>Test history save/load/delete/share.</li>
 <li>Test personal logo.</li>
-<li>Test nuclear-database update from the previous database version.</li>
+<li>Test nuclear-database update from the previous database
+version.</li>
 <li>Test offline fallback.</li>
 <li>Test Summary Scheme Index.</li>
 <li>Test representative nuclide layers.</li>
 <li>Test zoom/pan and clickable regions.</li>
-<li>Test alpha-decay schemes with multiple excited levels.</li>
-<li>Test a nuclide with no usable ENSDF transition data.</li>
-<li>Verify transfer of <code>A</code>, <code>Z</code>, branch <code>Qα</code>, <code>Eexc</code> and <code>l=0</code> to calculator.</li>
+<li>Test SHORT and LONG alpha-decay schemes with multiple potential and
+experimental levels.</li>
+<li>Verify that all experimental levels remain visible in SHORT
+mode.</li>
+<li>Verify potential-level filtering (<code>l &lt;= 1</code>, nominal
+total 10) in SHORT mode.</li>
+<li>Test a nuclide with no usable transition or adopted-level data.</li>
+<li>Verify transfer of <code>A</code>, <code>Z</code>, branch
+<code>Qα</code>, <code>Eexc</code> and the available <code>l</code> to
+calculator.</li>
+<li>Verify <code>CANCEL</code> returns from the scheme to the current
+mass-number layer.</li>
+<li>Verify the application and α-DB versions in the footer.</li>
 <li>Update <code>CHANGELOG.md</code>.</li>
-<li>Update affected <code>docs/*.md</code>.</li>
-<li>Verify NDFS PDF links.</li>
+<li>Update affected <code>docs/*.md</code> and regenerate
+<code>docs/html/</code>.</li>
+<li>Verify NDFS v3.0 PDF links.</li>
 <li>Commit, tag and push the release.</li>
 </ol>
-<h2>Scientific code</h2>
-<p>Changes to <code>AlphaDecayCalculator.kt</code> are scientifically significant. Do not mix coefficient/formula changes into cosmetic refactoring without explicit validation and changelog documentation.</p>
-<h2>Database reader</h2>
+<h2 id="scientific-code">Scientific code</h2>
+<p>Changes to <code>AlphaDecayCalculator.kt</code> are scientifically
+significant. Do not mix coefficient/formula changes into cosmetic
+refactoring without explicit validation and changelog documentation.</p>
+<h2 id="database-reader">Database reader</h2>
 <p>Changes to:</p>
-<pre><code>NuclideDatabase.kt
+<pre class="text"><code>NuclideDatabase.kt
 NuclideDatabaseUpdater.kt</code></pre>
 <p>can affect compatibility and safe updates.</p>
-<p>If a change alters the formal database schema rather than only the Android implementation, revise the NDFS specification as a separately versioned controlled document.</p>
-<h2>ENSDF renderer</h2>
-<p>Changes to <code>AlphaDecayScheme.kt</code> can affect how imported evaluated data are interpreted for display.</p>
+<p>If a change alters the formal database schema rather than only the
+Android implementation, revise the NDFS specification as a separately
+versioned controlled document.</p>
+<h2 id="ensdf-and-adopted-level-renderer">ENSDF and adopted-level
+renderer</h2>
+<p>Changes to <code>AlphaDecayScheme.kt</code> can affect how imported
+evaluated data are interpreted for display.</p>
 <p>Pay particular attention to:</p>
 <ul>
 <li>dataset ID joins;</li>
@@ -77,9 +95,13 @@ NuclideDatabaseUpdater.kt</code></pre>
 <li>missing-data fallback;</li>
 <li>branch Qα calculation;</li>
 <li><code>l</code> handling.</li>
+<li>distinction between experimental transitions and potential adopted
+levels;</li>
+<li>SHORT/LONG filtering;</li>
+<li><code>qAlphaLevel_keV</code> and <code>l_min</code> handling.</li>
 </ul>
-<h2>Suggested repository layout</h2>
-<pre><code>TAlpha4/
+<h2 id="suggested-repository-layout">Suggested repository layout</h2>
+<pre class="text"><code>TAlpha4/
 ├── README.md
 ├── CHANGELOG.md
 ├── docs/
@@ -101,10 +123,13 @@ NuclideDatabaseUpdater.kt</code></pre>
 │   ├── maintenance.md
 │   └── images/
 ├── misc/
-│   └── TAlphaNDFS_spec_v.2.2.pdf
+│   ├── TAlphaNDFS_spec_v.2.2.pdf
+│   └── TAlphaNDFS_spec_v.3.0.pdf
 └── app/</code></pre>
-<h2>GitHub Wiki</h2>
-<p>A Wiki may mirror selected user-facing pages, but <code>docs/</code> should remain the version-controlled documentation source of truth because it follows Git tags and source releases.</p></main>
+<h2 id="github-wiki">GitHub Wiki</h2>
+<p>A Wiki may mirror selected user-facing pages, but <code>docs/</code>
+should remain the version-controlled documentation source of truth
+because it follows Git tags and source releases.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>

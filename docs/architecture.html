@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Architecture — TAlpha v3.0</title>
+<title>Architecture — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,32 +29,43 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>Application Architecture</h1>
-<h2>Build configuration</h2>
-<p>The supplied v3.0 source declares:</p>
-<pre><code>applicationId = com.purgenetik.talpha
+<main><h1 id="application-architecture">Application Architecture</h1>
+<h2 id="build-configuration">Build configuration</h2>
+<p>The supplied v4.1 source package declares the following Android build
+metadata:</p>
+<pre class="text"><code>applicationId = com.purgenetik.talpha
 minSdk        = 24
 targetSdk     = 37
-versionCode   = 18
-versionName   = 3.0
+versionCode   = 21
+versionName   = 4.0
 Java/Kotlin   = 17</code></pre>
 <p>The project uses Kotlin, Jetpack Compose and Material 3.</p>
-<h2>Main Kotlin modules</h2>
-<h3><code>AlphaDecayCalculator.kt</code></h3>
-<p>Scientific numerical core for the 2009/2010 and 2015 half-life models.</p>
-<h3><code>HistoryStorage.kt</code></h3>
-<p>Persistence and parsing of <code>.talpha</code> calculation histories.</p>
-<h3><code>NuclideDatabase.kt</code></h3>
-<p>NDFS JSON/ZIP loading, Kotlin data model and local database discovery.</p>
-<h3><code>NuclideDatabaseUpdater.kt</code></h3>
-<p>Remote manifest retrieval, version comparison, safe download/install and local fallback.</p>
-<h3><code>NuclideSummary.kt</code></h3>
+<h2 id="main-kotlin-modules">Main Kotlin modules</h2>
+<h3
+id="alphadecaycalculatorkt"><code>AlphaDecayCalculator.kt</code></h3>
+<p>Scientific numerical core for the 2009/2010 and 2015 half-life
+models.</p>
+<h3 id="historystoragekt"><code>HistoryStorage.kt</code></h3>
+<p>Persistence and parsing of <code>.talpha</code> calculation
+histories.</p>
+<h3 id="nuclidedatabasekt"><code>NuclideDatabase.kt</code></h3>
+<p>NDFS JSON/ZIP loading, Kotlin data model and local database
+discovery.</p>
+<h3
+id="nuclidedatabaseupdaterkt"><code>NuclideDatabaseUpdater.kt</code></h3>
+<p>Remote manifest retrieval, version comparison, safe download/install
+and local fallback.</p>
+<h3 id="nuclidesummarykt"><code>NuclideSummary.kt</code></h3>
 <p>Scrollable Summary Scheme Index of available mass-number layers.</p>
-<h3><code>NuclideChart.kt</code></h3>
-<p>Interactive Canvas renderer for one isobaric layer, including zoom/pan, hit testing, Qα and experimental half-life annotations.</p>
-<h3><code>AlphaDecayScheme.kt</code></h3>
-<p>Conversion of normalized alpha-decay JSON into drawable daughter levels and interactive alpha-decay scheme rendering.</p>
-<h3><code>MainActivity.kt</code></h3>
+<h3 id="nuclidechartkt"><code>NuclideChart.kt</code></h3>
+<p>Interactive Canvas renderer for one isobaric layer of potential alpha
+emitters, including zoom/pan, hit testing, Qα and experimental half-life
+annotations.</p>
+<h3 id="alphadecayschemekt"><code>AlphaDecayScheme.kt</code></h3>
+<p>Conversion of normalized experimental transitions and NDFS v3.0
+adopted levels into drawable daughter levels, SHORT/LONG filtering and
+interactive scheme rendering.</p>
+<h3 id="mainactivitykt"><code>MainActivity.kt</code></h3>
 <p>Application orchestration and most UI integration, including:</p>
 <ul>
 <li>calculator;</li>
@@ -68,8 +79,8 @@ Java/Kotlin   = 17</code></pre>
 <li>personal logo;</li>
 <li>fixed header/footer.</li>
 </ul>
-<h2>Nuclear-data flow</h2>
-<pre><code>remote manifest
+<h2 id="nuclear-data-flow">Nuclear-data flow</h2>
+<pre class="text"><code>remote manifest
       ↓
 NuclideDatabaseUpdater
       ↓
@@ -78,6 +89,7 @@ filesDir/nuclide_database
 NuclideDatabaseStorage
       ↓
 NuclideDatabase
+      ↓ v1/v2 fields + NDFS v3.0 raw adoptedLevels
       ↓
 NuclideSummary
       ↓
@@ -92,22 +104,28 @@ MainActivity
 calculator input fields
       ↓
 AlphaDecayCalculator</code></pre>
-<h2>Failure boundaries</h2>
-<p>The implementation deliberately contains fallbacks at several points:</p>
+<h2 id="failure-boundaries">Failure boundaries</h2>
+<p>The implementation deliberately contains fallbacks at several
+points:</p>
 <ul>
 <li>remote update failure → use latest local database;</li>
-<li>local database failure → Chart unavailable, calculator remains separate;</li>
-<li>malformed/unexpected alpha-decay structure → conventional decay scheme;</li>
-<li>missing optional experimental fields → omit corresponding annotations.</li>
+<li>local database failure → Chart unavailable, calculator remains
+separate;</li>
+<li>malformed/unexpected alpha-decay/adopted-level structure →
+conventional decay scheme;</li>
+<li>missing optional experimental fields → omit corresponding
+annotations.</li>
 </ul>
-<h2>UI structure in v3.0</h2>
-<p>The main application has a fixed header, a central content area, and a fixed footer.</p>
+<h2 id="ui-structure-in-v40">UI structure in v4.0</h2>
+<p>The main application has a fixed header, a central content area, and
+a fixed footer.</p>
 <p>The central content area switches among:</p>
-<pre><code>calculator
+<pre class="text"><code>calculator
 Summary Scheme Index
 Nuclide Chart
 Alpha Decay Scheme</code></pre>
-<p>rather than creating separate Android activities for each scientific view.</p></main>
+<p>rather than creating separate Android activities for each scientific
+view.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>

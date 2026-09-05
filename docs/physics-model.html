@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Physics Model — TAlpha v3.0</title>
+<title>Physics Model — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,16 +29,21 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>Physics Model</h1>
-<h2>Implemented references</h2>
-<p>TAlpha implements alpha-decay half-life parameterizations based on:</p>
-<ol>
-<li>V. Yu. Denisov and A. A. Khudenko, <em>Physical Review C</em> <strong>79</strong> (2009), 054614.</li>
-<li>Erratum, <em>Physical Review C</em> <strong>82</strong> (2010), 059901.</li>
-<li>V. Yu. Denisov, O. I. Davidovskaya and I. Yu. Sedykh, <em>Physical Review C</em> <strong>92</strong> (2015), 014602.</li>
+<main><h1 id="physics-model">Physics Model</h1>
+<h2 id="implemented-references">Implemented references</h2>
+<p>TAlpha implements alpha-decay half-life parameterizations based
+on:</p>
+<ol type="1">
+<li>V. Yu. Denisov and A. A. Khudenko, <em>Physical Review C</em>
+<strong>79</strong> (2009), 054614.</li>
+<li>Erratum, <em>Physical Review C</em> <strong>82</strong> (2010),
+059901.</li>
+<li>V. Yu. Denisov, O. I. Davidovskaya and I. Yu. Sedykh, <em>Physical
+Review C</em> <strong>92</strong> (2015), 014602.</li>
 </ol>
-<p>For derivation, fit quality and applicability, consult the original publications.</p>
-<h2>Variables</h2>
+<p>For derivation, fit quality and applicability, consult the original
+publications.</p>
+<h2 id="variables">Variables</h2>
 <ul>
 <li><code>A</code> — parent mass number;</li>
 <li><code>Z</code> — parent proton number;</li>
@@ -47,84 +52,228 @@
 <li><code>Eexc</code> — daughter excitation energy in MeV;</li>
 <li><code>l</code> — orbital angular momentum.</li>
 </ul>
-<p>Both routines calculate a corrected energy and then evaluate a fitted expression for:</p>
-<pre class="math"><code>\[
-\log_{10}(T_{1/2}/\mathrm{s}).
-\]</code></pre>
-<h2>2009/2010 implementation</h2>
+<p>Both routines calculate a corrected energy and then evaluate a fitted
+expression for:</p>
+<p>[ \log_{10}(T_{1/2}/\mathrm{s}). ]</p>
+<h2 id="20092010-implementation">2009/2010 implementation</h2>
 <p>For <code>Z &lt; 60</code>:</p>
-<pre class="math"><code>\[
-r_k=13.6\times10^{-6},\quad \epsilon=2.408.
-\]</code></pre>
+<p>[ r_k=13.6\times10^{-6},\quad \epsilon=2.408. ]</p>
 <p>For <code>Z &gt;= 60</code>:</p>
-<pre class="math"><code>\[
-r_k=8.7\times10^{-6},\quad \epsilon=2.517.
-\]</code></pre>
+<p>[ r_k=8.7\times10^{-6},\quad \epsilon=2.517. ]</p>
 <p>The source calculates:</p>
-<pre class="math"><code>\[
-Q_1=Q-E_{exc}+r_k[Z^\epsilon-(Z-2)^\epsilon].
-\]</code></pre>
+<p>[ Q_1=Q-E_{exc}+r_k[Z^\epsilon-(Z-2)^\epsilon]. ]</p>
 <p>Then:</p>
-<pre class="math"><code>\[
-r_\mu=\left(\frac{A}{A-4}\right)^{1/6}
-\]</code></pre>
+<p>[ r_\mu=\left(\frac{A}{A-4}\right)^{1/6} ]</p>
 <p>and</p>
-<pre class="math"><code>\[
-\log T=
-a+b\frac{A^{1/6}\sqrt{Z}}{r_\mu}
-+c\frac{Z}{\sqrt{Q_1}}
-+d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1}
-+e x_e.
-\]</code></pre>
-<p><code>x_e = 0</code> for even <code>l</code> and <code>x_e = -2</code> for odd <code>l</code>.</p>
-<h2>2015 implementation</h2>
+<p>[ \log T= a+b\frac{A^{1/6}\sqrt{Z}}{r_\mu} +c\frac{Z}{\sqrt{Q_1}}
++d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1} +e x_e. ]</p>
+<p><code>x_e = 0</code> for even <code>l</code> and
+<code>x_e = -2</code> for odd <code>l</code>.</p>
+<h2 id="2015-implementation">2015 implementation</h2>
 <p>The source computes electronic binding-energy terms:</p>
-<pre class="math"><code>\[
+<p>[
 BE(Z)=\left(14.4381Z^{2.39}+1.55468\times10^{-6}Z^{5.35}\right)10^{-6}
-\]</code></pre>
+]</p>
 <p>and uses:</p>
-<pre class="math"><code>\[
-Q_1=Q-E_{exc}+BE(Z)-[BE(Z-2)+BE(2)].
-\]</code></pre>
+<p>[ Q_1=Q-E_{exc}+BE(Z)-[BE(Z-2)+BE(2)]. ]</p>
 <p>The half-life expression is:</p>
-<pre class="math"><code>\[
-\log T=
-a+b(A-4)^{1/6}\sqrt{Z}
-+c\frac{Z}{\sqrt{Q_1}}
-+d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1}
-+e x_e.
-\]</code></pre>
-<h2>Coefficient selection</h2>
+<p>[ \log T= a+b(A-4)^{1/6}\sqrt{Z} +c\frac{Z}{\sqrt{Q_1}}
++d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1} +e x_e. ]</p>
+<h2 id="coefficient-selection">Coefficient selection</h2>
 <p>Both implementations distinguish:</p>
-<pre><code>normal region: not (N &gt; 126 and Z &gt; 82)
+<pre class="text"><code>normal region: not (N &gt; 126 and Z &gt; 82)
 heavy region: N &gt; 126 and Z &gt; 82</code></pre>
 <p>and four proton/neutron parity combinations.</p>
-<h3>PRC 79 (2009) + Erratum coefficients</h3>
-<table><thead><tr><th>Region</th><th>Z/N</th><th>a</th><th>b</th><th>c</th><th>d</th><th>e</th></tr></thead><tbody>
-<tr><td>normal</td><td>even/even</td><td>-29.2462</td><td>-1.0372</td><td>1.6317</td><td>0</td><td>0</td></tr>
-<tr><td>normal</td><td>even/odd</td><td>-29.3796</td><td>-1.0807</td><td>1.6700</td><td>0.8009</td><td>-0.7403</td></tr>
-<tr><td>normal</td><td>odd/even</td><td>-28.4185</td><td>-1.1143</td><td>1.6614</td><td>0.2246</td><td>-0.7244</td></tr>
-<tr><td>normal</td><td>odd/odd</td><td>-32.0319</td><td>-1.0415</td><td>1.7326</td><td>0.3596</td><td>0.0903</td></tr>
-<tr><td>heavy</td><td>even/even</td><td>-28.0218</td><td>-1.0490</td><td>1.5858</td><td>0</td><td>0</td></tr>
-<tr><td>heavy</td><td>even/odd</td><td>-35.0831</td><td>-0.8378</td><td>1.6721</td><td>0.6687</td><td>-0.6695</td></tr>
-<tr><td>heavy</td><td>odd/even</td><td>-33.8303</td><td>-0.9461</td><td>1.7047</td><td>0.4372</td><td>-0.5095</td></tr>
-<tr><td>heavy</td><td>odd/odd</td><td>-40.9482</td><td>-0.3717</td><td>1.5229</td><td>1.4082</td><td>-0.0127</td></tr>
-</tbody></table>
-<h3>PRC 92 (2015) coefficients</h3>
-<table><thead><tr><th>Region</th><th>Z/N</th><th>a</th><th>b</th><th>c</th><th>d</th><th>e</th></tr></thead><tbody>
-<tr><td>normal</td><td>even/even</td><td>-29.340</td><td>-1.0380</td><td>1.6348</td><td>0</td><td>0</td></tr>
-<tr><td>normal</td><td>even/odd</td><td>-27.730</td><td>-1.1079</td><td>1.6360</td><td>0.68279</td><td>-0.46841</td></tr>
-<tr><td>normal</td><td>odd/even</td><td>-24.797</td><td>-1.1894</td><td>1.6000</td><td>0.46467</td><td>-0.69250</td></tr>
-<tr><td>normal</td><td>odd/odd</td><td>-31.741</td><td>-1.1052</td><td>1.7668</td><td>0.28076</td><td>-0.68208</td></tr>
-<tr><td>heavy</td><td>even/even</td><td>-28.385</td><td>-1.0313</td><td>1.5847</td><td>0</td><td>0</td></tr>
-<tr><td>heavy</td><td>even/odd</td><td>-31.924</td><td>-1.0505</td><td>1.7226</td><td>1.1097</td><td>-0.48490</td></tr>
-<tr><td>heavy</td><td>odd/even</td><td>-36.749</td><td>-0.79692</td><td>1.6863</td><td>0.59811</td><td>-0.51889</td></tr>
-<tr><td>heavy</td><td>odd/odd</td><td>-40.423</td><td>-0.48333</td><td>1.5976</td><td>0.80243</td><td>-0.27284</td></tr>
-</tbody></table>
-<h2>Numerical validity</h2>
-<p>Both calculator routines require the corrected energy to be positive. A numerical result should not be interpreted as proof that the chosen semiempirical parameterization is physically applicable to every possible manually entered combination.</p>
-<h2>Experimental versus calculated lifetime</h2>
-<p>Version 3.0 can display <code>T_hl_exp</code> from the nuclear database. This experimental/evaluated value is <strong>not</strong> used as the calculated result and should be distinguished from the half-life predicted by the Denisov formulas.</p></main>
+<h3 id="prc-79-2009--erratum-coefficients">PRC 79 (2009) + Erratum
+coefficients</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Region</th>
+<th>Z/N</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">c</th>
+<th style="text-align: right;">d</th>
+<th style="text-align: right;">e</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>normal</td>
+<td>even/even</td>
+<td style="text-align: right;">-29.2462</td>
+<td style="text-align: right;">-1.0372</td>
+<td style="text-align: right;">1.6317</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>normal</td>
+<td>even/odd</td>
+<td style="text-align: right;">-29.3796</td>
+<td style="text-align: right;">-1.0807</td>
+<td style="text-align: right;">1.6700</td>
+<td style="text-align: right;">0.8009</td>
+<td style="text-align: right;">-0.7403</td>
+</tr>
+<tr class="odd">
+<td>normal</td>
+<td>odd/even</td>
+<td style="text-align: right;">-28.4185</td>
+<td style="text-align: right;">-1.1143</td>
+<td style="text-align: right;">1.6614</td>
+<td style="text-align: right;">0.2246</td>
+<td style="text-align: right;">-0.7244</td>
+</tr>
+<tr class="even">
+<td>normal</td>
+<td>odd/odd</td>
+<td style="text-align: right;">-32.0319</td>
+<td style="text-align: right;">-1.0415</td>
+<td style="text-align: right;">1.7326</td>
+<td style="text-align: right;">0.3596</td>
+<td style="text-align: right;">0.0903</td>
+</tr>
+<tr class="odd">
+<td>heavy</td>
+<td>even/even</td>
+<td style="text-align: right;">-28.0218</td>
+<td style="text-align: right;">-1.0490</td>
+<td style="text-align: right;">1.5858</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>heavy</td>
+<td>even/odd</td>
+<td style="text-align: right;">-35.0831</td>
+<td style="text-align: right;">-0.8378</td>
+<td style="text-align: right;">1.6721</td>
+<td style="text-align: right;">0.6687</td>
+<td style="text-align: right;">-0.6695</td>
+</tr>
+<tr class="odd">
+<td>heavy</td>
+<td>odd/even</td>
+<td style="text-align: right;">-33.8303</td>
+<td style="text-align: right;">-0.9461</td>
+<td style="text-align: right;">1.7047</td>
+<td style="text-align: right;">0.4372</td>
+<td style="text-align: right;">-0.5095</td>
+</tr>
+<tr class="even">
+<td>heavy</td>
+<td>odd/odd</td>
+<td style="text-align: right;">-40.9482</td>
+<td style="text-align: right;">-0.3717</td>
+<td style="text-align: right;">1.5229</td>
+<td style="text-align: right;">1.4082</td>
+<td style="text-align: right;">-0.0127</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prc-92-2015-coefficients">PRC 92 (2015) coefficients</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Region</th>
+<th>Z/N</th>
+<th style="text-align: right;">a</th>
+<th style="text-align: right;">b</th>
+<th style="text-align: right;">c</th>
+<th style="text-align: right;">d</th>
+<th style="text-align: right;">e</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>normal</td>
+<td>even/even</td>
+<td style="text-align: right;">-29.340</td>
+<td style="text-align: right;">-1.0380</td>
+<td style="text-align: right;">1.6348</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>normal</td>
+<td>even/odd</td>
+<td style="text-align: right;">-27.730</td>
+<td style="text-align: right;">-1.1079</td>
+<td style="text-align: right;">1.6360</td>
+<td style="text-align: right;">0.68279</td>
+<td style="text-align: right;">-0.46841</td>
+</tr>
+<tr class="odd">
+<td>normal</td>
+<td>odd/even</td>
+<td style="text-align: right;">-24.797</td>
+<td style="text-align: right;">-1.1894</td>
+<td style="text-align: right;">1.6000</td>
+<td style="text-align: right;">0.46467</td>
+<td style="text-align: right;">-0.69250</td>
+</tr>
+<tr class="even">
+<td>normal</td>
+<td>odd/odd</td>
+<td style="text-align: right;">-31.741</td>
+<td style="text-align: right;">-1.1052</td>
+<td style="text-align: right;">1.7668</td>
+<td style="text-align: right;">0.28076</td>
+<td style="text-align: right;">-0.68208</td>
+</tr>
+<tr class="odd">
+<td>heavy</td>
+<td>even/even</td>
+<td style="text-align: right;">-28.385</td>
+<td style="text-align: right;">-1.0313</td>
+<td style="text-align: right;">1.5847</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>heavy</td>
+<td>even/odd</td>
+<td style="text-align: right;">-31.924</td>
+<td style="text-align: right;">-1.0505</td>
+<td style="text-align: right;">1.7226</td>
+<td style="text-align: right;">1.1097</td>
+<td style="text-align: right;">-0.48490</td>
+</tr>
+<tr class="odd">
+<td>heavy</td>
+<td>odd/even</td>
+<td style="text-align: right;">-36.749</td>
+<td style="text-align: right;">-0.79692</td>
+<td style="text-align: right;">1.6863</td>
+<td style="text-align: right;">0.59811</td>
+<td style="text-align: right;">-0.51889</td>
+</tr>
+<tr class="even">
+<td>heavy</td>
+<td>odd/odd</td>
+<td style="text-align: right;">-40.423</td>
+<td style="text-align: right;">-0.48333</td>
+<td style="text-align: right;">1.5976</td>
+<td style="text-align: right;">0.80243</td>
+<td style="text-align: right;">-0.27284</td>
+</tr>
+</tbody>
+</table>
+<h2 id="numerical-validity">Numerical validity</h2>
+<p>Both calculator routines require the corrected energy to be positive.
+A numerical result should not be interpreted as proof that the chosen
+semiempirical parameterization is physically applicable to every
+possible manually entered combination.</p>
+<h2 id="experimental-versus-calculated-lifetime">Experimental versus
+calculated lifetime</h2>
+<p>Version 4.0 can display <code>T_hl_exp</code> from the nuclear
+database. This experimental/evaluated value is <strong>not</strong> used
+as the calculated result and should be distinguished from the half-life
+predicted by the Denisov formulas. Likewise, an NDFS v3.0 potential
+adopted level indicates energetic accessibility, not an experimentally
+measured lifetime.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>

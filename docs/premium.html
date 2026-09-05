@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Premium — TAlpha v3.0</title>
+<title>Premium — TAlpha v4.0</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v3.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,11 +29,12 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1>Premium Features</h1>
-<h2>Premium entitlement</h2>
+<main><h1 id="premium-features">Premium Features</h1>
+<h2 id="premium-entitlement">Premium entitlement</h2>
 <p>TAlpha uses Google Play Billing for its Premium in-app product.</p>
-<p>The v3.0 source uses Premium state to gate or alter several features.</p>
-<h2>Premium features in v3.0</h2>
+<p>The v4.0 source uses Premium state to gate or alter several
+features.</p>
+<h2 id="premium-features-in-v40">Premium features in v4.0</h2>
 <ul>
 <li>removal of advertising;</li>
 <li>calculation-history sharing;</li>
@@ -41,16 +42,21 @@
 <li>personal logo;</li>
 <li>Premium launcher presentation.</li>
 </ul>
-<h2>Chart gating</h2>
-<p>The navigation drawer always shows the Chart entry, but it is visually disabled/marked Premium for non-Premium users.</p>
-<p>Selecting it without Premium opens the Premium dialog instead of the chart.</p>
-<h2>Personal logo</h2>
-<p>Premium users can install a personal logo. The image is stored locally as:</p>
-<pre><code>personal_logo.png</code></pre>
-<p>In v3.0 the personal logo is displayed in the center of the fixed footer, while the standard TAlpha application logo is restored to the upper-right header position.</p>
-<h2>Billing</h2>
+<h2 id="chart-gating">Chart gating</h2>
+<p>The navigation drawer always shows the Chart entry, but it is
+visually disabled/marked Premium for non-Premium users.</p>
+<p>Selecting it without Premium opens the Premium dialog instead of the
+chart.</p>
+<h2 id="personal-logo">Personal logo</h2>
+<p>Premium users can install a personal logo. The image is stored
+locally as:</p>
+<pre class="text"><code>personal_logo.png</code></pre>
+<p>In v4.0 the personal logo is displayed in the center of the fixed
+footer, while the standard TAlpha application logo remains in the
+upper-right header position.</p>
+<h2 id="billing">Billing</h2>
 <p>The application:</p>
-<ol>
+<ol type="1">
 <li>creates a Billing client;</li>
 <li>connects to Google Play;</li>
 <li>queries Premium product information;</li>
@@ -59,9 +65,12 @@
 <li>processes purchase updates;</li>
 <li>updates application entitlement state.</li>
 </ol>
-<p>Payment credentials are handled by Google Play rather than TAlpha.</p>
-<h2>Testing warning</h2>
-<p>Premium behavior should be tested through the appropriate Google Play testing/license-testing configuration. Local debug installation alone may not reproduce production purchase behavior.</p></main>
+<p>Payment credentials are handled by Google Play rather than
+TAlpha.</p>
+<h2 id="testing-warning">Testing warning</h2>
+<p>Premium behavior should be tested through the appropriate Google Play
+testing/license-testing configuration. Local debug installation alone
+may not reproduce production purchase behavior.</p></main>
 </div>
 <footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
