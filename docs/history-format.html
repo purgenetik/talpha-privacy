@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>History Format — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: History Format">
+<title>History Format — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -36,7 +37,7 @@
 <p>The active file is stored under:</p>
 <pre class="text"><code>filesDir/data/default.talpha</code></pre>
 <h2 id="header">Header</h2>
-<pre class="csv"><code>A,Z,Q_alpha,E_exc_level,l,logT_2009,Tsec_2009,Tyr_2009,logT_2015,Tsec_2015,Tyr_2015,q_exp,Elevel_exp,T_exp</code></pre>
+<pre class="csv"><code>A,Z,Q_alpha,E_exc_level,l,logT_2009,Tsec_2009,Tyr_2009,logT_2015,Tsec_2015,Tyr_2015,q_exp,Elevel_exp,T_exp,Jpi_exp</code></pre>
 <h2 id="columns">Columns</h2>
 <table>
 <thead>
@@ -102,27 +103,24 @@
 <td><code>T_exp</code></td>
 <td>Experimental half-life in years, when available</td>
 </tr>
+<tr class="odd">
+<td><code>Jpi_exp</code></td>
+<td>Experimental daughter-level spin/parity, CSV-quoted when present</td>
+</tr>
 </tbody>
 </table>
-<p>The final three fields are optional. The reader remains compatible
-with the earlier 11-column format.</p>
+<p>The current v5.0-line reader expects 15 columns and the exact current header. An old header is not silently interpreted as the new format; import of a saved history with another header is rejected as unsupported.</p>
+<p><code>Jpi_exp</code> is normalized before writing: surrounding whitespace and a trailing <code>(g.s.)</code> marker are removed, unknown <code>?</code> is stored as empty, and embedded quotes are escaped according to CSV rules.</p>
 <h2 id="duplicate-detection">Duplicate detection</h2>
-<p>The five calculator inputs define duplicate identity. Floating Qα and
-excitation values are compared with the tolerance implemented in
-<code>HistoryStorage.kt</code>.</p>
+<p>The five calculator inputs define duplicate identity. Floating Qα and excitation values are compared with the tolerance implemented in <code>HistoryStorage.kt</code>.</p>
 <h2 id="saved-histories">Saved histories</h2>
-<p>Saved names are sanitized, receive the <code>.talpha</code> extension
-when needed, and cannot use the reserved active name
-<code>default.talpha</code>.</p>
-<p>Individual saved files can be deleted from the load dialog. Premium
-users choose a specific history file and share its existing contents
-through Android's standard sharing interface.</p>
+<p>Saved names are sanitized, receive the <code>.talpha</code> extension when needed, and cannot use the reserved active name <code>default.talpha</code>.</p>
+<p>Individual saved files can be deleted from the load dialog. Premium users choose a specific history file and share its existing contents through Android's standard sharing interface.</p>
+<p>The Show History dialog presents calculated R1/R2 values separately from the experimental line. When available, that line includes daughter <code>Jπ</code>, level energy in keV, branch-specific <code>Qα</code> in keV and <code>T½exp</code> in years. Horizontal scrolling and adaptive dialog width support narrow portrait and wider landscape layouts.</p>
 <h2 id="important-distinction">Important distinction</h2>
-<p><code>.talpha</code> history files are unrelated to the JSON
-<strong>TAlpha NDFS nuclear database</strong>. History records contain
-calculations; NDFS contains nuclear-data records for chart/database
-functionality.</p></main>
+<p><code>.talpha</code> history files are unrelated to the JSON <strong>TAlpha NDFS nuclear database</strong>. History records contain calculations; NDFS contains nuclear-data records for chart/database functionality.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>

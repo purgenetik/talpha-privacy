@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Overview — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: Overview">
+<title>Overview — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -29,31 +30,20 @@
 <a href="privacy-and-data.html">Privacy and Data</a>
 <a href="specifications.html">Specifications</a>
 <a href="maintenance.html">Maintenance</a></nav>
-<main><h1 id="talpha-v40-overview">TAlpha v4.0 Overview</h1>
+<main><h1 id="talpha-v53-overview">TAlpha v5.3 Overview</h1>
 <h2 id="purpose">Purpose</h2>
-<p><strong>TAlpha</strong> is an Android scientific application for
-calculating alpha-decay half-lives using semiempirical formulae by V.
-Yu. Denisov and co-authors.</p>
-<p>Version 4.0 expands the nuclear-data workflow from experimentally
-observed alpha transitions to all energetically accessible alpha-decay
-candidates supplied by the database, without discarding the available
-experimental information. Premium users can browse the chart, open
-potential and experimental daughter-level schemes, and transfer a
-selected channel directly into the calculator.</p>
+<p><strong>TAlpha</strong> is an Android scientific application for calculating alpha-decay half-lives using semiempirical formulae by V. Yu. Denisov and co-authors.</p>
+<p>TAlpha v5.3 retains the extended nuclear-data workflow introduced in v4.x and changes how the Android client handles large databases. The application no longer keeps the complete α-database in memory while the chart is open. A downloaded NDFS v3.0 package is installed as separate mass-number (<code>A</code>) layer files, and only the selected layer is loaded on demand.</p>
+<p>The release also refines decay-scheme navigation, nuclide annotations and the presentation of calculated and experimental history data.</p>
 <h2 id="version">Version</h2>
-<p>The supplied source declares:</p>
-<pre class="text"><code>versionCode = 21
-versionName = 4.0</code></pre>
-<p>The application footer displays the build version and the currently
-loaded α-DB version at runtime. This documentation package is revision
-4.1.</p>
-<h2 id="main-v40-capabilities">Main v4.0 capabilities</h2>
+<p>The supplied source snapshot declares:</p>
+<pre class="text"><code>versionCode = 27
+versionName = 5.0</code></pre>
+<p>The application footer displays the installed build version and the currently loaded α-DB version at runtime. This documentation package is revision 5.3 and describes the 5.0 feature line plus the documented 5.x UI refinements.</p>
+<h2 id="main-v53-capabilities">Main v5.3 capabilities</h2>
 <ul>
-<li>alpha-decay half-life calculation with two Denisov
-parameterizations;</li>
-<li>manual entry of <code>A</code>, <code>Z</code>,
-<code>Q_alpha</code>, daughter excitation energy and
-<code>l</code>;</li>
+<li>alpha-decay half-life calculation with two Denisov parameterizations;</li>
+<li>manual entry of <code>A</code>, <code>Z</code>, <code>Q_alpha</code>, daughter excitation energy and <code>l</code>;</li>
 <li>calculation history with save/load/delete;</li>
 <li>Premium history sharing;</li>
 <li>Premium personal logo;</li>
@@ -61,26 +51,25 @@ parameterizations;</li>
 <li>mass-number Summary Scheme Index;</li>
 <li>interactive isobaric nuclide charts;</li>
 <li>pinch zoom and pan;</li>
-<li>experimental ground-state alpha half-life display when
-available;</li>
-<li>alpha-decay candidate schemes containing energetically accessible
-adopted daughter levels;</li>
-<li>preservation and distinct display of experimentally observed ENSDF
-transitions;</li>
-<li>SHORT and LONG decay-scheme modes;</li>
-<li><code>l_min</code> information for potential transitions when
-supplied by NDFS v3.0;</li>
+<li>experimental ground-state alpha half-life display when available;</li>
+<li>alpha-decay candidate schemes containing energetically accessible adopted daughter levels;</li>
+<li>preservation and distinct display of experimentally observed ENSDF transitions;</li>
+<li>SHORT and FULL RANGES decay-scheme views;</li>
+<li>full schemes divided into selectable energy intervals of 20 levels;</li>
+<li>less restrictive SHORT selection below 1 MeV (<code>l_min &lt;= 8</code>, while the stricter <code>l_min &lt;= 1</code> rule remains above 1 MeV);</li>
+<li><code>l_min</code> information for potential transitions when supplied by NDFS v3.0;</li>
 <li>transfer of a selected decay branch to the calculator;</li>
-<li>NDFS v3.0-compatible candidate-level data while retaining v1/v2
-fields;</li>
+<li>NDFS v3.0-compatible candidate-level data while retaining v1/v2 fields;</li>
 <li>automatic remote nuclear-database update;</li>
-<li>validation before installing a downloaded database;</li>
-<li>fallback to the latest valid local database when remote update
-fails;</li>
-<li>improved navigation between the mass-number layer and decay
-scheme;</li>
-<li>fixed footer with application and α-DB versions plus the centered
-personal logo.</li>
+<li>streaming installation of a downloaded ZIP into separate <code>A</code>-layer files;</li>
+<li>on-demand loading with only one selected layer retained in the ViewModel;</li>
+<li>validation in a staging directory before a layered database becomes active;</li>
+<li>fallback to the latest valid local database when remote update fails;</li>
+<li>visible database/layer loading states and a RAM-use indicator;</li>
+<li>improved navigation between the mass-number layer and decay scheme;</li>
+<li>ground-state <code>Jπ</code> annotations when reliable data are available;</li>
+<li>history display of experimental <code>Jπ</code>, level energy, branch <code>Qα</code> and <code>T½exp</code>;</li>
+<li>fixed footer with application and α-DB versions plus the centered personal logo.</li>
 </ul>
 <h2 id="calculator-inputs">Calculator inputs</h2>
 <table>
@@ -121,7 +110,7 @@ personal logo.</li>
 </table>
 <p><code>N = A - Z</code> is calculated internally.</p>
 <h2 id="nuclear-data-workflow">Nuclear-data workflow</h2>
-<p>The v4.0 user path is:</p>
+<p>The v5.3 user path is:</p>
 <pre class="text"><code>Chart of α-decaying nuclei
         ↓
 Summary Scheme Index (select A)
@@ -130,36 +119,30 @@ isobaric nuclide chart
         ↓
 select parent nuclide
         ↓
-alpha-decay scheme (SHORT; optionally LONG)
+alpha-decay scheme (SHORT or one FULL RANGES interval)
         ↓
 select daughter level
         ↓
 A, Z, branch Qα, Eexc and available l transferred to calculator
         ↓
 calculate T1/2</code></pre>
-<p>Experimentally known transitions and potential adopted levels are
-complementary. If neither produces a usable level, the renderer falls
-back to a conventional ground-state-to-ground-state representation
-rather than crashing.</p>
+<p>Experimentally known transitions and potential adopted levels are complementary. If neither produces a usable level, the renderer falls back to a conventional ground-state-to-ground-state representation rather than crashing.</p>
 <h2 id="network-behavior">Network behavior</h2>
 <p>The half-life calculation itself is local.</p>
-<p>Version 4.0 uses the network for services such as:</p>
+<p>Version 5.3 uses the network for services such as:</p>
 <ul>
-<li>downloading the nuclear-database manifest and newer database
-package;</li>
+<li>downloading the nuclear-database manifest and newer database package;</li>
 <li>Google Play Billing;</li>
 <li>Google Mobile Ads;</li>
 <li>external links.</li>
 </ul>
-<p>Once a valid nuclear database is present locally, the database
-subsystem is designed to continue using the latest local copy when a
-remote update cannot be obtained.</p>
+<p>Once a valid nuclear database is present locally, the database subsystem is designed to continue using the latest local copy when a remote update cannot be obtained.</p>
+<h2 id="memory-model">Memory model</h2>
+<p>The Summary Scheme Index is built from lightweight <code>NuclideDatabaseInfo</code> metadata: database version, format version and the list of available mass numbers. Selecting <code>A</code> starts an asynchronous layer read. Selecting another <code>A</code> cancels the previous request and releases the old layer reference. Consequently, chart memory scales primarily with one layer instead of the complete database.</p>
 <h2 id="scientific-use-notice">Scientific-use notice</h2>
-<p>TAlpha combines model calculations, energetically allowed candidate
-levels and evaluated experimental data. A candidate level is not
-evidence of an observed branch, and a calculated half-life is not an
-experimental value.</p></main>
+<p>TAlpha combines model calculations, energetically allowed candidate levels and evaluated experimental data. A candidate level is not evidence of an observed branch, and a calculated half-life is not an experimental value.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>

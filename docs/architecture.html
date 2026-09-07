@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Architecture — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: Architecture">
+<title>Architecture — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -31,40 +32,31 @@
 <a href="maintenance.html">Maintenance</a></nav>
 <main><h1 id="application-architecture">Application Architecture</h1>
 <h2 id="build-configuration">Build configuration</h2>
-<p>The supplied v4.1 source package declares the following Android build
-metadata:</p>
+<p>The supplied 5.0-line source snapshot declares the following Android build metadata:</p>
 <pre class="text"><code>applicationId = com.purgenetik.talpha
 minSdk        = 24
 targetSdk     = 37
-versionCode   = 21
-versionName   = 4.0
+versionCode   = 27
+versionName   = 5.0
 Java/Kotlin   = 17</code></pre>
 <p>The project uses Kotlin, Jetpack Compose and Material 3.</p>
 <h2 id="main-kotlin-modules">Main Kotlin modules</h2>
-<h3
-id="alphadecaycalculatorkt"><code>AlphaDecayCalculator.kt</code></h3>
-<p>Scientific numerical core for the 2009/2010 and 2015 half-life
-models.</p>
+<h3 id="alphadecaycalculatorkt"><code>AlphaDecayCalculator.kt</code></h3>
+<p>Scientific numerical core for the 2009/2010 and 2015 half-life models.</p>
 <h3 id="historystoragekt"><code>HistoryStorage.kt</code></h3>
-<p>Persistence and parsing of <code>.talpha</code> calculation
-histories.</p>
+<p>Persistence and parsing of <code>.talpha</code> calculation histories.</p>
 <h3 id="nuclidedatabasekt"><code>NuclideDatabase.kt</code></h3>
-<p>NDFS JSON/ZIP loading, Kotlin data model and local database
-discovery.</p>
-<h3
-id="nuclidedatabaseupdaterkt"><code>NuclideDatabaseUpdater.kt</code></h3>
-<p>Remote manifest retrieval, version comparison, safe download/install
-and local fallback.</p>
+<p>NDFS parsing, streaming ZIP installation, local <code>DB_vN/DB_vN_A.json</code> storage, layered-database validation and single-layer reads.</p>
+<h3 id="nuclidedatabaseupdaterkt"><code>NuclideDatabaseUpdater.kt</code></h3>
+<p>Remote manifest retrieval, version comparison, temporary download, layered installation and local fallback.</p>
+<h3 id="nuclidedatabaseviewmodelkt"><code>NuclideDatabaseViewModel.kt</code></h3>
+<p>Owns lightweight database metadata and at most one selected <code>NuclideLayer</code>. Layer reads run on <code>Dispatchers.IO</code>; an obsolete request is cancelled when the user selects another mass number.</p>
 <h3 id="nuclidesummarykt"><code>NuclideSummary.kt</code></h3>
 <p>Scrollable Summary Scheme Index of available mass-number layers.</p>
 <h3 id="nuclidechartkt"><code>NuclideChart.kt</code></h3>
-<p>Interactive Canvas renderer for one isobaric layer of potential alpha
-emitters, including zoom/pan, hit testing, Qα and experimental half-life
-annotations.</p>
+<p>Interactive Canvas renderer for one isobaric layer of potential alpha emitters, including zoom/pan, hit testing, Qα and experimental half-life annotations.</p>
 <h3 id="alphadecayschemekt"><code>AlphaDecayScheme.kt</code></h3>
-<p>Conversion of normalized experimental transitions and NDFS v3.0
-adopted levels into drawable daughter levels, SHORT/LONG filtering and
-interactive scheme rendering.</p>
+<p>Conversion of normalized experimental transitions and NDFS v3.0 adopted levels into drawable daughter levels, SHORT/FULL RANGES filtering and interactive scheme rendering.</p>
 <h3 id="mainactivitykt"><code>MainActivity.kt</code></h3>
 <p>Application orchestration and most UI integration, including:</p>
 <ul>
@@ -84,14 +76,16 @@ interactive scheme rendering.</p>
       ↓
 NuclideDatabaseUpdater
       ↓
-filesDir/nuclide_database
+temporary downloaded ZIP
       ↓
-NuclideDatabaseStorage
+streaming split + staging validation
       ↓
-NuclideDatabase
-      ↓ v1/v2 fields + NDFS v3.0 raw adoptedLevels
+filesDir/nuclide_database/DB_vN/DB_vN_A.json
       ↓
-NuclideSummary
+NuclideDatabaseInfo → NuclideSummary
+      ↓ select A
+NuclideDatabaseViewModel.loadLayer(A)
+      ↓ one NuclideLayer in memory
       ↓
 NuclideChart
       ↓ selected NuclideRecord
@@ -105,28 +99,26 @@ calculator input fields
       ↓
 AlphaDecayCalculator</code></pre>
 <h2 id="failure-boundaries">Failure boundaries</h2>
-<p>The implementation deliberately contains fallbacks at several
-points:</p>
+<p>The implementation deliberately contains fallbacks at several points:</p>
 <ul>
 <li>remote update failure → use latest local database;</li>
-<li>local database failure → Chart unavailable, calculator remains
-separate;</li>
-<li>malformed/unexpected alpha-decay/adopted-level structure →
-conventional decay scheme;</li>
-<li>missing optional experimental fields → omit corresponding
-annotations.</li>
+<li>interrupted/invalid installation → discard the staging directory and keep installed versions untouched;</li>
+<li>obsolete layer request → cancel it and accept only the most recently requested <code>A</code>;</li>
+<li>local database failure → Chart unavailable, calculator remains separate;</li>
+<li>malformed/unexpected alpha-decay/adopted-level structure → conventional decay scheme;</li>
+<li>missing optional experimental fields → omit corresponding annotations.</li>
 </ul>
-<h2 id="ui-structure-in-v40">UI structure in v4.0</h2>
-<p>The main application has a fixed header, a central content area, and
-a fixed footer.</p>
+<h2 id="ui-structure-in-v53">UI structure in v5.3</h2>
+<p>The main application has a fixed header, a central content area, and a fixed footer.</p>
 <p>The central content area switches among:</p>
 <pre class="text"><code>calculator
 Summary Scheme Index
 Nuclide Chart
 Alpha Decay Scheme</code></pre>
-<p>rather than creating separate Android activities for each scientific
-view.</p></main>
+<p>rather than creating separate Android activities for each scientific view.</p>
+<p>Database information is retained across normal Activity recreation by <code>NuclideDatabaseViewModel</code>; the selected layer is released when the chart is closed. This prevents repeated full-database initialization and sharply reduces peak memory use during chart navigation.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>

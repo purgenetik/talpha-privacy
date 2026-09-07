@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>User Guide — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: User Guide">
+<title>User Guide — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -37,14 +38,12 @@ Z
 Q_alpha [MeV]
 E_exc_level [MeV]
 l</code></pre>
-<p>TAlpha calculates the half-life with both implemented
-parameterizations:</p>
+<p>TAlpha calculates the half-life with both implemented parameterizations:</p>
 <ul>
 <li>PRC 79 (2009) + Erratum (2010);</li>
 <li>PRC 92 (2015).</li>
 </ul>
-<p>The application derives <code>N = A - Z</code> and selects the
-appropriate fitted coefficient set automatically.</p>
+<p>The application derives <code>N = A - Z</code> and selects the appropriate fitted coefficient set automatically.</p>
 <h2 id="2-results">2. Results</h2>
 <p>The calculation engine produces for each model:</p>
 <ul>
@@ -53,36 +52,27 @@ appropriate fitted coefficient set automatically.</p>
 <li><code>T1/2</code> in seconds;</li>
 <li><code>T1/2</code> in years.</li>
 </ul>
-<p>The main UI presents the calculated lifetime results; internal
-corrected-Q values remain part of the calculation result object.</p>
+<p>The main UI presents the calculated lifetime results; internal corrected-Q values remain part of the calculation result object.</p>
 <h2 id="3-calculation-history">3. Calculation history</h2>
 <p>Successful calculations can be stored in the active history file:</p>
 <pre class="text"><code>filesDir/data/default.talpha</code></pre>
-<p>History can be viewed, saved under another <code>.talpha</code>
-filename, loaded, and deleted. Premium users can share history through
-Android's standard sharing interface.</p>
+<p>History can be viewed, saved under another <code>.talpha</code> filename, loaded, and deleted. The v5.3 history view separates model results from an experimental line containing available daughter <code>Jπ</code>, level energy, branch <code>Qα</code> and <code>T½exp</code>. The dialog supports horizontal scrolling and adapts to portrait/landscape width. Premium users can share a selected history through Android's standard sharing interface.</p>
 <p>See <a href="history-format.html">History Format</a>.</p>
 <h2 id="4-chart-of-α-decaying-nuclei">4. Chart of α-decaying nuclei</h2>
-<p>The navigation drawer contains <strong>Chart of α-decaying
-nuclei</strong>. In v4.0 this is a Premium feature.</p>
-<p>Opening it displays the <strong>Summary Scheme Index</strong>,
-generated from the mass-number layers available in the currently loaded
-nuclear database.</p>
+<p>The navigation drawer contains <strong>Chart of α-decaying nuclei</strong>. In v5.3 this is a Premium feature.</p>
+<p>Opening it displays the <strong>Summary Scheme Index</strong>, generated from the mass-number layers available in the currently loaded nuclear database.</p>
 <p>Select an entry such as:</p>
 <pre class="text"><code>A=152</code></pre>
 <p>to open that isobaric layer.</p>
 <h2 id="5-isobaric-chart">5. Isobaric chart</h2>
-<p>The chart plots nuclides belonging to one mass number
-<code>A</code>.</p>
-<p>The vertical coordinate is derived from mass excess relative to the
-minimum mass excess in the selected layer. Neighboring <code>Z</code>
-values are connected graphically.</p>
+<p>The chart plots nuclides belonging to one mass number <code>A</code>.</p>
+<p>The vertical coordinate is derived from mass excess relative to the minimum mass excess in the selected layer. Neighboring <code>Z</code> values are connected graphically.</p>
 <p>For each nuclide the chart can display:</p>
 <ul>
 <li>nuclide label;</li>
 <li><code>Qα</code> in keV when supplied;</li>
-<li>experimental alpha half-life <code>T½</code> in years when
-<code>T_hl_exp</code> is present.</li>
+<li>experimental alpha half-life <code>T½</code> in years when <code>T_hl_exp</code> is present.</li>
+<li>ground-state <code>Jπ</code> when it can be resolved reliably.</li>
 </ul>
 <p>The chart supports:</p>
 <ul>
@@ -93,10 +83,7 @@ values are connected graphically.</p>
 <p>Clickable regions are outlined to make interactive areas visible.</p>
 <h2 id="6-alpha-decay-scheme">6. Alpha-decay scheme</h2>
 <p>Tapping a nuclide opens its alpha-decay scheme.</p>
-<p>TAlpha combines experimentally known ENSDF transitions with
-energetically accessible adopted daughter levels from NDFS v3.0.
-Experimental data are preserved and visually distinguished; a potential
-adopted level does not by itself indicate an observed alpha branch.</p>
+<p>TAlpha combines experimentally known ENSDF transitions with energetically accessible adopted daughter levels from NDFS v3.0. Experimental data are preserved and visually distinguished; a potential adopted level does not by itself indicate an observed alpha branch.</p>
 <p>For a displayed branch:</p>
 <pre class="text"><code>branch Qα = parent ground-state Qα - daughter excitation energy</code></pre>
 <p>The scheme may include:</p>
@@ -104,22 +91,17 @@ adopted level does not by itself indicate an observed alpha branch.</p>
 <li>daughter excitation energy;</li>
 <li>spin/parity when available;</li>
 <li>branch Qα;</li>
-<li>experimental half-life associated with the matched decay
-dataset;</li>
+<li>experimental half-life associated with the matched decay dataset;</li>
 <li>transition intensity when available in the imported record;</li>
-<li>minimum orbital angular momentum <code>l_min</code> for a potential
-level when available.</li>
+<li>minimum orbital angular momentum <code>l_min</code> for a potential level when available.</li>
 </ul>
-<p>Duplicate experimental daughter levels from multiple ENSDF datasets
-are merged by excitation energy for display, with preference for a
-record carrying an experimental lifetime. A potential level matching an
-experimental level within 1 keV and with the same spin/parity is not
-added again.</p>
-<p>The scheme initially opens in <strong>SHORT</strong> mode. It always
-contains all experimental levels and may add low-<code>l</code>
-potential levels (<code>l &lt;= 1</code>) up to a nominal total of 10.
-Tap <strong>LONG</strong> to display all available potential and
-experimental levels. Thin arrows identify experimental transitions.</p>
+<p>Duplicate experimental daughter levels from multiple ENSDF datasets are merged by excitation energy for display, with preference for a record carrying an experimental lifetime. A potential level matching an experimental level within 1 keV and with the same spin/parity is not added again.</p>
+<p>The scheme offers two presentations:</p>
+<ul>
+<li><strong>SHORT</strong> is a compact selection that retains experimental information and fills the remaining places with adopted levels up to a nominal total of 10. Below 1 MeV the adopted-level condition is relaxed to <code>l_min &lt;= 8</code>; above 1 MeV the stricter <code>l_min &lt;= 1</code> condition remains.</li>
+<li><strong>FULL RANGES (keV)</strong> replaces the former LONG view. All available levels are sorted and divided into ranges of 20 levels. Double-arrow controls select adjacent ranges, and a diamond marks the displayed interval between its printed boundary energies.</li>
+</ul>
+<p>The controls above the graphics use the application labels <strong>2SHORT</strong>, <strong>2CHART</strong> and <strong>CANCEL</strong>. Thin arrows inside the nuclear scheme identify experimental transitions; an adopted potential level remains selectable without an experimental arrow.</p>
 <h2 id="7-selecting-a-decay-branch">7. Selecting a decay branch</h2>
 <p>Tap a daughter level to transfer the branch to the calculator.</p>
 <p>The source transfers:</p>
@@ -127,30 +109,19 @@ experimental levels. Thin arrows identify experimental transitions.</p>
 Z      = parent Z
 Qalpha = selected branch Qα / 1000 [MeV]
 Eexc   = selected daughter excitation / 1000 [MeV]
-l      = transition value or l_min; 0 when unavailable</code></pre>
-<p>Experimental transition records currently use <code>l = 0</code>.
-Potential adopted levels use <code>l_min</code> when available and
-otherwise fall back to <code>0</code>. The user can edit <code>l</code>
-manually before calculating.</p>
-<p>After selection, the decay scheme and nuclide chart close and the
-calculator is shown with the transferred values.</p>
+l      = transition value or l_min when reliably available</code></pre>
+<p>If <code>l_min</code> cannot be determined because <code>Jπ</code> is missing or ambiguous, the scheme does not invent a value. The user can enter a physically justified <code>l</code> manually before calculating.</p>
+<p>After selection, the decay scheme and nuclide chart close and the calculator is shown with the transferred values.</p>
 <h2 id="8-missing-level-data">8. Missing level data</h2>
-<p>If neither experimental transitions nor potential adopted levels can
-be parsed into usable daughter levels, TAlpha generates a conventional
-ground-state scheme instead of terminating the chart.</p>
+<p>If neither experimental transitions nor potential adopted levels can be parsed into usable daughter levels, TAlpha generates a conventional ground-state scheme instead of terminating the chart.</p>
 <h2 id="9-database-loading">9. Database loading</h2>
-<p>At application startup, TAlpha attempts to obtain the best available
-nuclear database. The application first knows the latest local version,
-then attempts a remote manifest/update, and finally loads the latest
-local database.</p>
+<p>At application startup, TAlpha attempts to obtain the best available nuclear database. It checks the latest complete local layered version and then attempts a remote manifest/update.</p>
+<p>On the first installation of a database version, the downloaded ZIP is streamed and divided into separate mass-number files. This initialization can take several minutes; keep the application open while the loading indicator is shown. Later starts use the prepared layer directory. Opening an A value loads only that layer, and the previous layer is released when navigation moves elsewhere.</p>
 <p>If no database can be loaded, the Chart screen reports:</p>
 <pre class="text"><code>Nuclide database is not available.</code></pre>
 <h2 id="10-footer">10. Footer</h2>
-<p>Version 4.0 contains a fixed footer.</p>
-<p>It shows the application version and currently loaded α-DB version on
-the left. A Premium personal logo, when installed, is displayed in the
-exact center of the footer. The standard TAlpha logo remains in the
-application header.</p>
+<p>Version 5.3 contains a fixed footer.</p>
+<p>It shows the application version and currently loaded α-DB version on the left, together with a RAM-use indicator. A Premium personal logo, when installed, is displayed in the exact center of the footer. The standard TAlpha logo remains in the application header.</p>
 <h2 id="11-premium">11. Premium</h2>
 <p>Premium controls:</p>
 <ul>
@@ -159,8 +130,9 @@ application header.</p>
 <li>Chart of α-decaying nuclei;</li>
 <li>personal logo.</li>
 </ul>
-<p>Purchase entitlement is handled through Google Play Billing.</p></main>
+<p>Purchase entitlement is handled through Google Play Billing.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>

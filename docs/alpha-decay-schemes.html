@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alpha-decay Schemes — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: Alpha-decay Schemes">
+<title>Alpha-decay Schemes — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -31,19 +32,13 @@
 <a href="maintenance.html">Maintenance</a></nav>
 <main><h1 id="alpha-decay-schemes">Alpha-decay Schemes</h1>
 <h2 id="purpose">Purpose</h2>
-<p><code>AlphaDecayScheme.kt</code> visualizes energetically accessible
-alpha-decay channels from a selected parent nuclide to levels in the
-daughter nucleus.</p>
-<p>Version 4.0 combines two complementary NDFS v3.0 sources:</p>
+<p><code>AlphaDecayScheme.kt</code> visualizes energetically accessible alpha-decay channels from a selected parent nuclide to levels in the daughter nucleus.</p>
+<p>Version 5.3 combines two complementary NDFS v3.0 sources:</p>
 <ul>
-<li><code>alphaDecay.transitions</code> — experimentally
-observed/evaluated alpha transitions;</li>
-<li><code>adoptedLevels</code> — daughter levels that can potentially be
-populated according to the candidate-generation policy.</li>
+<li><code>alphaDecay.transitions</code> — experimentally observed/evaluated alpha transitions;</li>
+<li><code>adoptedLevels</code> — daughter levels that can potentially be populated according to the candidate-generation policy.</li>
 </ul>
-<p>The presence of a level in <code>adoptedLevels</code> does not mean
-that the corresponding alpha branch has been observed
-experimentally.</p>
+<p>The presence of a level in <code>adoptedLevels</code> does not mean that the corresponding alpha branch has been observed experimentally.</p>
 <h2 id="data-model">Data model</h2>
 <p>The renderer uses:</p>
 <pre class="text"><code>AlphaDecaySchemeData
@@ -59,76 +54,53 @@ tExpYears
 l
 intensityPercent
 experimental</code></pre>
-<p>The <code>experimental</code> flag distinguishes measured/evaluated
-transitions from potential adopted levels.</p>
-<h2 id="parsing-experimental-transitions">Parsing experimental
-transitions</h2>
-<p><code>NuclideRecord.toAlphaDecaySchemeData()</code> parses the stored
-<code>alphaDecayJson</code>.</p>
+<p>The <code>experimental</code> flag distinguishes measured/evaluated transitions from potential adopted levels.</p>
+<h2 id="parsing-experimental-transitions">Parsing experimental transitions</h2>
+<p><code>NuclideRecord.toAlphaDecaySchemeData()</code> parses the stored <code>alphaDecayJson</code> and <code>adoptedLevelsJson</code> belonging to the selected A layer.</p>
 <p>It reads:</p>
 <pre class="text"><code>decays[]
 transitions[]</code></pre>
-<p>The first available decay record is used to obtain daughter
-identification when present.</p>
+<p>The first available decay record is used to obtain daughter identification when present.</p>
 <h2 id="dataset-half-life-mapping">Dataset half-life mapping</h2>
 <p>For each normalized decay, the parser obtains:</p>
 <pre class="text"><code>dataset.id
 halfLifeYears</code></pre>
 <p>and creates a map:</p>
 <pre class="text"><code>dataset ID → experimental half-life in years</code></pre>
-<p>A transition with the corresponding dataset ID can therefore carry
-the matched experimental lifetime into the displayed daughter level.</p>
+<p>A transition with the corresponding dataset ID can therefore carry the matched experimental lifetime into the displayed daughter level.</p>
 <h2 id="daughter-levels">Daughter levels</h2>
-<p>A transition is only drawable as a daughter level when the parser can
-obtain:</p>
+<p>A transition is only drawable as a daughter level when the parser can obtain:</p>
 <pre class="text"><code>finalLevel.energy.value</code></pre>
 <p>Invalid or negative excitation energies are skipped.</p>
-<p>Spin/parity is read from the final level when available. Intensity is
-read from the transition intensity object when available.</p>
-<h2 id="parsing-potential-adopted-levels">Parsing potential adopted
-levels</h2>
-<p>The converter also reads <code>adoptedLevels</code> from the complete
-nuclide <code>rawJson</code>. For each usable level it obtains:</p>
+<p>Spin/parity is read from the final level when available. Intensity is read from the transition intensity object when available.</p>
+<h2 id="parsing-potential-adopted-levels">Parsing potential adopted levels</h2>
+<p>The converter also reads the serialized <code>adoptedLevelsJson</code>. For each usable level it obtains:</p>
 <pre class="text"><code>energy.value
 spinParity.stringRepresentation
 l_min</code></pre>
-<p>Invalid or negative energies are skipped. If <code>l_min</code> is
-absent or null, the current Android renderer uses <code>l = 0</code> as
-an editable fallback.</p>
-<p>An adopted level is not added a second time when an experimental
-level has the same spin/parity and an excitation energy within 1
-keV.</p>
+<p>Invalid or negative energies are skipped. If <code>l_min</code> cannot be established reliably, the UI omits a derived angular-momentum annotation rather than inventing a physical value.</p>
+<p>An adopted level is not added a second time when an experimental level has the same spin/parity and an excitation energy within 1 keV.</p>
 <h2 id="branch-qα">Branch Qα</h2>
-<p>The database <code>qAlpha</code> is the parent
-ground-state-to-ground-state value.</p>
-<p>For a level at excitation energy <code>Eexc</code> the
-displayed/transferred branch value is:</p>
+<p>The database <code>qAlpha</code> is the parent ground-state-to-ground-state value.</p>
+<p>For a level at excitation energy <code>Eexc</code> the displayed/transferred branch value is:</p>
 <pre class="text"><code>Qα(branch) = Qα(g.s.→g.s.) - Eexc</code></pre>
 <p>with both terms in keV inside the scheme model.</p>
 <h2 id="duplicate-levels">Duplicate levels</h2>
-<p>Multiple ENSDF datasets may contain transitions to the same daughter
-excitation energy.</p>
-<p>Experimental levels are grouped using excitation energy formatted to
-three decimal places. When duplicates exist, the renderer prefers an
-entry that contains an experimental lifetime; otherwise it uses the
-first matching entry.</p>
+<p>Multiple ENSDF datasets may contain transitions to the same daughter excitation energy.</p>
+<p>Experimental levels are grouped using excitation energy formatted to three decimal places. When duplicates exist, the renderer prefers an entry that contains an experimental lifetime; otherwise it uses the first matching entry.</p>
 <p>The resulting levels are sorted by excitation energy.</p>
-<h2 id="short-and-long-modes">SHORT and LONG modes</h2>
-<p>The scheme opens in <strong>SHORT</strong> mode:</p>
+<h2 id="short-and-full-ranges-views">SHORT and FULL RANGES views</h2>
+<p>The scheme can be shown in <strong>SHORT</strong> mode:</p>
 <ul>
 <li>all experimental levels are always included;</li>
-<li>potential levels are restricted to <code>l &lt;= 1</code>;</li>
-<li>potential levels fill the remaining places up to a nominal total of
-10 levels;</li>
-<li>if 10 or more experimental levels exist, no potential levels are
-added in SHORT mode.</li>
+<li>adopted levels below 1 MeV may satisfy the relaxed <code>l_min &lt;= 8</code> condition;</li>
+<li>above 1 MeV the stricter <code>l_min &lt;= 1</code> condition remains;</li>
+<li>potential levels fill the remaining places up to a nominal total of 10 levels;</li>
+<li>if 10 or more experimental levels exist, no potential levels are added in SHORT mode.</li>
 </ul>
-<p>The <strong>LONG</strong> button switches to the extended view
-containing all parsed experimental and potential levels. The current
-screen returns to SHORT mode when a different nuclide is opened.</p>
-<p>Thin arrows are drawn only for experimental transitions. Potential
-levels remain selectable and are shown without an
-experimental-transition arrow.</p>
+<p>The former single <strong>LONG</strong> canvas is replaced by <strong>FULL RANGES (keV)</strong>. The complete sorted level set is divided into intervals containing 20 levels each. Double-arrow buttons select neighboring intervals; a diamond marks the active interval and the displayed boundary energies identify it. This keeps large schemes readable without removing levels from the full set.</p>
+<p>The navigation controls remain above the scheme. <strong>2SHORT</strong> switches to the compact view, <strong>2CHART</strong> returns to the selected A-layer chart, and <strong>CANCEL</strong> returns directly to the calculator.</p>
+<p>Thin arrows are drawn only for experimental transitions. Potential levels remain selectable and are shown without an experimental-transition arrow.</p>
 <h2 id="fallback-behavior">Fallback behavior</h2>
 <p>If:</p>
 <ul>
@@ -136,10 +108,8 @@ experimental-transition arrow.</p>
 <li>JSON parsing fails;</li>
 <li>the normalized structure is unexpected;</li>
 </ul>
-<p>TAlpha creates a conventional parent-to-daughter scheme with no
-imported excited-level list.</p>
-<p>The interactive renderer can then represent the ground-state branch
-instead of crashing.</p>
+<p>TAlpha creates a conventional parent-to-daughter scheme with no imported excited-level list.</p>
+<p>The interactive renderer can then represent the ground-state branch instead of crashing.</p>
 <h2 id="interaction">Interaction</h2>
 <p>The scheme supports zoom/pan and clickable daughter levels.</p>
 <p>Selecting a level creates:</p>
@@ -151,18 +121,12 @@ branch Qα in MeV
 daughter excitation energy in MeV
 experimental half-life when available
 orbital angular momentum from the selected level</code></pre>
-<p>The calculator then receives these values. <code>CANCEL</code>
-returns to the current isobaric layer without changing the
-calculator.</p>
+<p>The calculator then receives these values. Selecting a level returns to the calculator with the branch data; <strong>2CHART</strong> returns to the current isobaric layer without changing the calculator.</p>
 <h2 id="orbital-angular-momentum">Orbital angular momentum</h2>
-<p>Experimental transition records currently receive:</p>
-<pre class="text"><code>l = 0</code></pre>
-<p>Potential adopted levels use <code>l_min</code> when supplied by NDFS
-v3.0. If it is unavailable, the renderer uses <code>0</code> as the
-editable fallback.</p>
-<p>The user remains responsible for checking and, when necessary,
-editing <code>l</code> before calculation.</p></main>
+<p>Potential adopted levels use <code>l_min</code> when it can be determined from sufficiently definite parent/daughter <code>Jπ</code>. The <code>l</code> label is omitted when the assignment is unknown or ambiguous rather than inventing a value.</p>
+<p>The user remains responsible for checking and, when necessary, editing <code>l</code> before calculation.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>

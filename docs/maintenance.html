@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maintenance — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: Maintenance">
+<title>Maintenance — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -32,9 +33,9 @@
 <main><h1 id="maintainer-guide">Maintainer Guide</h1>
 <h2 id="release-rule">Release rule</h2>
 <p>Documentation should describe the tagged source release.</p>
-<p>For the v4.0 Android build, the source metadata are:</p>
-<pre class="text"><code>versionCode = 21
-versionName = 4.0</code></pre>
+<p>For the supplied 5.0-line Android source snapshot, the metadata are:</p>
+<pre class="text"><code>versionCode = 27
+versionName = 5.0</code></pre>
 <h2 id="release-checklist">Release checklist</h2>
 <ol type="1">
 <li>Verify calculator reference cases.</li>
@@ -45,47 +46,36 @@ versionName = 4.0</code></pre>
 <li>Test Free-version advertising.</li>
 <li>Test history save/load/delete/share.</li>
 <li>Test personal logo.</li>
-<li>Test nuclear-database update from the previous database
-version.</li>
+<li>Test nuclear-database update from the previous database version.</li>
 <li>Test offline fallback.</li>
 <li>Test Summary Scheme Index.</li>
 <li>Test representative nuclide layers.</li>
 <li>Test zoom/pan and clickable regions.</li>
-<li>Test SHORT and LONG alpha-decay schemes with multiple potential and
-experimental levels.</li>
-<li>Verify that all experimental levels remain visible in SHORT
-mode.</li>
-<li>Verify potential-level filtering (<code>l &lt;= 1</code>, nominal
-total 10) in SHORT mode.</li>
+<li>Test SHORT and FULL RANGES alpha-decay schemes with multiple potential and experimental levels.</li>
+<li>Verify that all experimental levels remain visible in SHORT mode.</li>
+<li>Verify SHORT potential-level filtering (<code>l_min &lt;= 8</code> below 1 MeV, <code>l_min &lt;= 1</code> above 1 MeV, nominal total 10).</li>
 <li>Test a nuclide with no usable transition or adopted-level data.</li>
-<li>Verify transfer of <code>A</code>, <code>Z</code>, branch
-<code>Qα</code>, <code>Eexc</code> and the available <code>l</code> to
-calculator.</li>
-<li>Verify <code>CANCEL</code> returns from the scheme to the current
-mass-number layer.</li>
-<li>Verify the application and α-DB versions in the footer.</li>
+<li>Verify transfer of <code>A</code>, <code>Z</code>, branch <code>Qα</code>, <code>Eexc</code> and the available <code>l</code> to calculator.</li>
+<li>Verify <strong>2CHART</strong> returns to the current mass-number layer and <strong>CANCEL</strong> returns to the calculator.</li>
+<li>Verify the application version, α-DB version and RAM indicator in the footer.</li>
 <li>Update <code>CHANGELOG.md</code>.</li>
-<li>Update affected <code>docs/*.md</code> and regenerate
-<code>docs/html/</code>.</li>
+<li>Update affected <code>docs/*.md</code> and regenerate <code>docs/html/</code>.</li>
 <li>Verify NDFS v3.0 PDF links.</li>
+<li>Test first-run ZIP splitting, staging cleanup after an induced failure, and one-layer-at-a-time memory behavior.</li>
+<li>Verify the 15-column history header and experimental <code>Jπ</code> round-trip.</li>
 <li>Commit, tag and push the release.</li>
 </ol>
 <h2 id="scientific-code">Scientific code</h2>
-<p>Changes to <code>AlphaDecayCalculator.kt</code> are scientifically
-significant. Do not mix coefficient/formula changes into cosmetic
-refactoring without explicit validation and changelog documentation.</p>
+<p>Changes to <code>AlphaDecayCalculator.kt</code> are scientifically significant. Do not mix coefficient/formula changes into cosmetic refactoring without explicit validation and changelog documentation.</p>
 <h2 id="database-reader">Database reader</h2>
 <p>Changes to:</p>
 <pre class="text"><code>NuclideDatabase.kt
-NuclideDatabaseUpdater.kt</code></pre>
+NuclideDatabaseUpdater.kt
+NuclideDatabaseViewModel.kt</code></pre>
 <p>can affect compatibility and safe updates.</p>
-<p>If a change alters the formal database schema rather than only the
-Android implementation, revise the NDFS specification as a separately
-versioned controlled document.</p>
-<h2 id="ensdf-and-adopted-level-renderer">ENSDF and adopted-level
-renderer</h2>
-<p>Changes to <code>AlphaDecayScheme.kt</code> can affect how imported
-evaluated data are interpreted for display.</p>
+<p>If a change alters the formal database schema rather than only the Android implementation, revise the NDFS specification as a separately versioned controlled document.</p>
+<h2 id="ensdf-and-adopted-level-renderer">ENSDF and adopted-level renderer</h2>
+<p>Changes to <code>AlphaDecayScheme.kt</code> can affect how imported evaluated data are interpreted for display.</p>
 <p>Pay particular attention to:</p>
 <ul>
 <li>dataset ID joins;</li>
@@ -95,9 +85,8 @@ evaluated data are interpreted for display.</p>
 <li>missing-data fallback;</li>
 <li>branch Qα calculation;</li>
 <li><code>l</code> handling.</li>
-<li>distinction between experimental transitions and potential adopted
-levels;</li>
-<li>SHORT/LONG filtering;</li>
+<li>distinction between experimental transitions and potential adopted levels;</li>
+<li>SHORT/FULL RANGES filtering and 20-level range boundaries;</li>
 <li><code>qAlphaLevel_keV</code> and <code>l_min</code> handling.</li>
 </ul>
 <h2 id="suggested-repository-layout">Suggested repository layout</h2>
@@ -122,15 +111,14 @@ levels;</li>
 │   ├── specifications.md
 │   ├── maintenance.md
 │   └── images/
-├── misc/
+├── docs/misc/
 │   ├── TAlphaNDFS_spec_v.2.2.pdf
 │   └── TAlphaNDFS_spec_v.3.0.pdf
 └── app/</code></pre>
 <h2 id="github-wiki">GitHub Wiki</h2>
-<p>A Wiki may mirror selected user-facing pages, but <code>docs/</code>
-should remain the version-controlled documentation source of truth
-because it follows Git tags and source releases.</p></main>
+<p>A Wiki may mirror selected user-facing pages, but <code>docs/</code> should remain the version-controlled documentation source of truth because it follows Git tags and source releases.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>

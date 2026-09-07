@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Physics Model — TAlpha v4.0</title>
+<meta name="description" content="TAlpha v5.3 documentation: Physics Model">
+<title>Physics Model — TAlpha v5.3</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="header-inner">
   <div class="brand">TAlpha Documentation</div>
-  <div class="version">v4.0 · α-decay T₁/₂ calculator</div>
+  <div class="version">v5.3 · α-decay T₁/₂ calculator</div>
   <div style="margin-left:auto"><a href="../">Privacy Policy</a></div>
 </div></header>
 <div class="layout">
@@ -31,18 +32,13 @@
 <a href="maintenance.html">Maintenance</a></nav>
 <main><h1 id="physics-model">Physics Model</h1>
 <h2 id="implemented-references">Implemented references</h2>
-<p>TAlpha implements alpha-decay half-life parameterizations based
-on:</p>
+<p>TAlpha implements alpha-decay half-life parameterizations based on:</p>
 <ol type="1">
-<li>V. Yu. Denisov and A. A. Khudenko, <em>Physical Review C</em>
-<strong>79</strong> (2009), 054614.</li>
-<li>Erratum, <em>Physical Review C</em> <strong>82</strong> (2010),
-059901.</li>
-<li>V. Yu. Denisov, O. I. Davidovskaya and I. Yu. Sedykh, <em>Physical
-Review C</em> <strong>92</strong> (2015), 014602.</li>
+<li>V. Yu. Denisov and A. A. Khudenko, <em>Physical Review C</em> <strong>79</strong> (2009), 054614.</li>
+<li>Erratum, <em>Physical Review C</em> <strong>82</strong> (2010), 059901.</li>
+<li>V. Yu. Denisov, O. I. Davidovskaya and I. Yu. Sedykh, <em>Physical Review C</em> <strong>92</strong> (2015), 014602.</li>
 </ol>
-<p>For derivation, fit quality and applicability, consult the original
-publications.</p>
+<p>For derivation, fit quality and applicability, consult the original publications.</p>
 <h2 id="variables">Variables</h2>
 <ul>
 <li><code>A</code> — parent mass number;</li>
@@ -52,8 +48,7 @@ publications.</p>
 <li><code>Eexc</code> — daughter excitation energy in MeV;</li>
 <li><code>l</code> — orbital angular momentum.</li>
 </ul>
-<p>Both routines calculate a corrected energy and then evaluate a fitted
-expression for:</p>
+<p>Both routines calculate a corrected energy and then evaluate a fitted expression for:</p>
 <p>[ \log_{10}(T_{1/2}/\mathrm{s}). ]</p>
 <h2 id="20092010-implementation">2009/2010 implementation</h2>
 <p>For <code>Z &lt; 60</code>:</p>
@@ -65,27 +60,21 @@ expression for:</p>
 <p>Then:</p>
 <p>[ r_\mu=\left(\frac{A}{A-4}\right)^{1/6} ]</p>
 <p>and</p>
-<p>[ \log T= a+b\frac{A^{1/6}\sqrt{Z}}{r_\mu} +c\frac{Z}{\sqrt{Q_1}}
-+d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1} +e x_e. ]</p>
-<p><code>x_e = 0</code> for even <code>l</code> and
-<code>x_e = -2</code> for odd <code>l</code>.</p>
+<p>[ \log T= a+b\frac{A^{1/6}\sqrt{Z}}{r_\mu} +c\frac{Z}{\sqrt{Q_1}} +d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1} +e x_e. ]</p>
+<p><code>x_e = 0</code> for even <code>l</code> and <code>x_e = -2</code> for odd <code>l</code>.</p>
 <h2 id="2015-implementation">2015 implementation</h2>
 <p>The source computes electronic binding-energy terms:</p>
-<p>[
-BE(Z)=\left(14.4381Z^{2.39}+1.55468\times10^{-6}Z^{5.35}\right)10^{-6}
-]</p>
+<p>[ BE(Z)=\left(14.4381Z^{2.39}+1.55468\times10^{-6}Z^{5.35}\right)10^{-6} ]</p>
 <p>and uses:</p>
 <p>[ Q_1=Q-E_{exc}+BE(Z)-[BE(Z-2)+BE(2)]. ]</p>
 <p>The half-life expression is:</p>
-<p>[ \log T= a+b(A-4)^{1/6}\sqrt{Z} +c\frac{Z}{\sqrt{Q_1}}
-+d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1} +e x_e. ]</p>
+<p>[ \log T= a+b(A-4)^{1/6}\sqrt{Z} +c\frac{Z}{\sqrt{Q_1}} +d\frac{\sqrt{l(l+1)}A^{1/6}}{Q_1} +e x_e. ]</p>
 <h2 id="coefficient-selection">Coefficient selection</h2>
 <p>Both implementations distinguish:</p>
 <pre class="text"><code>normal region: not (N &gt; 126 and Z &gt; 82)
 heavy region: N &gt; 126 and Z &gt; 82</code></pre>
 <p>and four proton/neutron parity combinations.</p>
-<h3 id="prc-79-2009--erratum-coefficients">PRC 79 (2009) + Erratum
-coefficients</h3>
+<h3 id="prc-79-2009--erratum-coefficients">PRC 79 (2009) + Erratum coefficients</h3>
 <table>
 <thead>
 <tr class="header">
@@ -262,19 +251,11 @@ coefficients</h3>
 </tbody>
 </table>
 <h2 id="numerical-validity">Numerical validity</h2>
-<p>Both calculator routines require the corrected energy to be positive.
-A numerical result should not be interpreted as proof that the chosen
-semiempirical parameterization is physically applicable to every
-possible manually entered combination.</p>
-<h2 id="experimental-versus-calculated-lifetime">Experimental versus
-calculated lifetime</h2>
-<p>Version 4.0 can display <code>T_hl_exp</code> from the nuclear
-database. This experimental/evaluated value is <strong>not</strong> used
-as the calculated result and should be distinguished from the half-life
-predicted by the Denisov formulas. Likewise, an NDFS v3.0 potential
-adopted level indicates energetic accessibility, not an experimentally
-measured lifetime.</p></main>
+<p>Both calculator routines require the corrected energy to be positive. A numerical result should not be interpreted as proof that the chosen semiempirical parameterization is physically applicable to every possible manually entered combination.</p>
+<h2 id="experimental-versus-calculated-lifetime">Experimental versus calculated lifetime</h2>
+<p>Version 5.3 can display <code>T_hl_exp</code> from the nuclear database. This experimental/evaluated value is <strong>not</strong> used as the calculated result and should be distinguished from the half-life predicted by the Denisov formulas. Likewise, an NDFS v3.0 potential adopted level indicates energetic accessibility, not an experimentally measured lifetime.</p>
+</main>
 </div>
-<footer>TAlpha documentation · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
+<footer>TAlpha v5.3 · documentation revision 5.3 · NDFS v3.0 · © V.I. Tretyak &amp; Yu.A. Shitov, IEAP CTU</footer>
 </body>
 </html>
